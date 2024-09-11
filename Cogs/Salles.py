@@ -125,7 +125,7 @@ class Salles(interactions.Extension):
             Embed = interactions.Embed(
                 title=":x: ERREUR :x:",
                 description="",
-                color=0xff0000,
+                color=0x2980b9,
             )
             Embed.add_field(
                 name="On est en dehors des heures de cours\nRessayez demain",
@@ -137,7 +137,7 @@ class Salles(interactions.Extension):
             Embed = interactions.Embed(
                 title=":x: ERREUR :x:",
                 description="",
-                color=0xff0000,
+                color=0x2980b9,
             )
             Embed.add_field(
                 name="L'emploi du temps n'est pas encore chargé",
@@ -163,7 +163,7 @@ class Salles(interactions.Extension):
             title=
             "Salles libres actuellement, triées par durée de disponibilité",
             description="",
-            color=0xff8c3f,
+            color=0x2980b9,
             footer={
                 "text":
                 "Dernière mise à jour: " +
@@ -187,7 +187,7 @@ class Salles(interactions.Extension):
         if len(info) == 0:
             Embed.title = ":x: ERREUR :x:"
             Embed.description = "Soit il n'y a pas de salles libres, soit l'emploi du temps n'est pas encore chargé"
-            Embed.color = 0xff0000
+            Embed.color = 0x2980b9
 
         await ctx.send(embeds=Embed)
 
@@ -211,7 +211,7 @@ class Salles(interactions.Extension):
         Embed = interactions.Embed(
             title="Informations sur la salle " + str(salle),
             description="",
-            color=0xff8c3f,
+            color=0x2980b9,
             footer={
                 "text":
                 "Dernière mise à jour: " +
@@ -222,13 +222,13 @@ class Salles(interactions.Extension):
         if "error" in info and info["error"] == "NOT FOUND":
             Embed.title = ":x: ERREUR :x:"
             Embed.description = "la salle " + str(salle) + " n'existe pas"
-            Embed.color = 0xff0000
+            Embed.color = 0x2980b9
             await ctx.send(embeds=Embed, ephemeral=True)
             return
         if info["free"] == [] and info["cours"] == [] and not info["now"]:
             Embed.title = ":x: ERREUR :x:"
             Embed.description = "Problème lors de la récupération des informations"
-            Embed.color = 0xff0000
+            Embed.color = 0x2980b9
             await ctx.send(embeds=Embed, ephemeral=True)
             return
 
@@ -339,7 +339,7 @@ class Salles(interactions.Extension):
         Embed = interactions.Embed(
             title="Informations sur " + str(prof),
             description="",
-            color=0xff8c3f,
+            color=0x2980b9,
             footer={
                 "text":
                 "Dernière mise à jour: " +
@@ -411,7 +411,7 @@ class Salles(interactions.Extension):
             title="Informations sur l'emploi du temps du TD :\n" + td + "-" +
             tp + " du BUT" + annee + "",
             description="",
-            color=0xff8c3f,
+            color=0x2980b9,
             footer={
                 "text":
                 "Dernière mise à jour: " +
@@ -426,7 +426,7 @@ class Salles(interactions.Extension):
                 "Tu n'as pas de rôle d'année, de TD ou de TP\nVérifie tes rôles ici : <#959813680101478470>",
                 value="\n",
                 inline=False)
-            Embed.color = 0xff0000
+            Embed.color = 0x2980b9
             await ctx.send(embeds=Embed, ephemeral=True)
             return
         else:
@@ -449,7 +449,7 @@ class Salles(interactions.Extension):
         Embed = interactions.Embed(
             title="Informations sur l'extension [Salles]",
             description="",
-            color=0xff8c3f,
+            color=0x2980b9,
             footer={
                 "text":
                 "Extension créé par @noenic \nhttps://github.com/noenic/BotPromoInfo"

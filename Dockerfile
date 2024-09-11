@@ -1,14 +1,17 @@
-# Use Python as the base image
-FROM python:3.11-alpine3.18
+# Utilise une version plus récente si possible
+FROM python:3.9-slim
 
-# Set the working directory
+# Utilise des WORKDIR pour éviter les répétitions de chemins
 WORKDIR /app
 
-# Copy the current directory into the container at /app
-COPY . /app
+# Copie uniquement requirements.txt pour installer les dépendances plus rapidement en cas de modifications minimes
+COPY requirements.txt .
 
-# Install the requirements.txt file
+# Installations des dépendances
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Specify the command to run when the container starts
-CMD [ "python3","-u","HegoBot.py" ]
+# Copie des autres fichiers dans le conteneur
+COPY . .
+
+# Ajoute une commande CMD pour lancer ton bot automatiquement
+CMD ["python", "main.py"]
