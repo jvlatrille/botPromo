@@ -3,10 +3,11 @@ from dotenv import load_dotenv
 import interactions
 from interactions import Embed
 import random
+import confidentiel
 
 # Chargement des variables d'environnement
 load_dotenv()
-TOKEN = os.environ['TOKEN']
+TOKEN = confidentiel.TOKEN
 
 if not TOKEN:
     print("[Main] TOKEN non trouvé")

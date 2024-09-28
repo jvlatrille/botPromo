@@ -158,3 +158,5 @@ cython_debug/
 
 #La configuration du bot
 *.ini
+
+confidentiel.py
