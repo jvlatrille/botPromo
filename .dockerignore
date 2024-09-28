@@ -1,0 +1,22 @@
+# Ignorer les fichiers de configuration sensibles
+.env
+*.ini
+
+# Ignorer les fichiers Python compilés
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignorer les fichiers/dossiers de build
+build/
+dist/
+*.egg-info/
+
+# Ignorer les logs et fichiers temporaires
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Ignorer les dossiers Git
+.git/

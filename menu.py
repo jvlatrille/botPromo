@@ -6,8 +6,8 @@ def majMenu():
     """Récupère les menus du site du Crous"""
     url = 'https://www.crous-bordeaux.fr/restaurant/resto-u-pierre-bidart/'
     try:
-        r = requests.get(url)
-        r.raise_for_status()  # Vérifie que la requête est réussie
+        with requests.get(url) as r:
+            r.raise_for_status()  # Vérifie que la requête est réussie
     except requests.RequestException as e:
         print(f"Erreur lors de la récupération du menu : {e}")
         return {}
@@ -21,6 +21,10 @@ def majMenu():
 
     jours = element.find_all('h3')
     sElement = element.select('div[class="content clearfix"]')
+
+    if not jours or not sElement:
+        print("Données manquantes dans la page.")
+        return {}
 
     dico = {}
     for i in range(len(sElement)):

@@ -1,17 +1,21 @@
-# Utilise une version plus récente si possible
-FROM python:3.9-slim
+# Utiliser une image de base compatible ARM (pour Raspberry Pi 5, architecture ARM64)
+FROM python:3.11-slim-bullseye
 
-# Utilise des WORKDIR pour éviter les répétitions de chemins
+# Définir le répertoire de travail
 WORKDIR /app
 
-# Copie uniquement requirements.txt pour installer les dépendances plus rapidement en cas de modifications minimes
+# Copier le fichier requirements.txt dans le conteneur
 COPY requirements.txt .
 
-# Installations des dépendances
+# Installer les dépendances listées dans le requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copie des autres fichiers dans le conteneur
+# Copier tout le reste du projet dans le conteneur
 COPY . .
 
-# Ajoute une commande CMD pour lancer ton bot automatiquement
+# Exposer un port si nécessaire
+EXPOSE 8000
+
+# Spécifier la commande de lancement de ton bot botPromo
 CMD ["python", "main.py"]
+  

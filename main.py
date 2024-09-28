@@ -35,24 +35,6 @@ async def on_ready():
             name="PING FOR HELP"))
 
 
-@interactions.slash_command(
-    name="kill", description='Kill le bot (seul le créateur peut le faire)')
-async def kill(ctx: interactions.SlashContext):
-    """Command pour arrêter le bot"""
-    if str(ctx.author.id
-           ) == "583268098983985163":  # Id spécifique à l'utilisateur autorisé
-        await ctx.send("Je dégage!")
-        await client.stop()
-        exit()
-    else:
-        print(
-            f"[Main] L'utilisateur {ctx.author.username} a tenté de kill le bot"
-        )
-        await ctx.send(
-            "https://tenor.com/view/chut-ferme-la-tg-puceau-puceau-de-merde-gif-20903914",
-            ephemeral=True)
-
-
 @interactions.slash_command(name="ping",
                             description="Vérifie si le bot répond")
 async def ping(ctx):
@@ -61,51 +43,68 @@ async def ping(ctx):
 
 @interactions.listen()
 async def on_message_create(event):
-    message = event.message
-    # Vérification si le bot est mentionné en utilisant son ID
-    if f"<@{client.user.id}>" in message.content:
-        # Création de l'embed pour l'affichage des commandes
-        embed = interactions.Embed(
-            title="📋 Liste des commandes disponibles",
-            description=
-            "Voici toutes les commandes que tu peux utiliser avec ce bot",
-            color=0x2980b9,
-            footer={
-                "text": "Mentionne le bot pour afficher cette liste à nouveau."
-            })
+    try:
+        message = event.message
+        # Vérification si le bot est mentionné en utilisant son ID
+        if f"<@{client.user.id}>" in message.content:
+            # Création de l'embed pour l'affichage des commandes
+            embed = interactions.Embed(
+                title="📋 Liste des commandes disponibles",
+                description=
+                "Voici toutes les commandes que tu peux utiliser avec ce bot",
+                color=0x2980b9,
+            )
+            # Ajout d'un footer à l'embed
+            embed.set_footer(
+                text="Mentionne le bot pour afficher cette liste à nouveau.")
 
-        # Ajout des commandes à l'embed
-        for command in client.application_commands:
-            embed.add_field(name=f"/{command.name}",
-                            value=command.description
-                            or "Pas de description disponible",
-                            inline=False)
+            # Ajout des commandes à l'embed
+            for command in client.application_commands:
+                embed.add_field(name=f"/{command.name}",
+                                value=command.description
+                                or "Pas de description disponible",
+                                inline=False)
 
-        # Envoi de l'embed dans le canal
-        await message.channel.send(embeds=embed)
+            # Envoi de l'embed dans le canal
+            await message.channel.send(embeds=embed)
+
+    except Exception as e:
+        # Log de l'erreur pour mieux comprendre ce qui plante
+        print(f"Erreur dans on_message_create : {e}")
 
 
 @interactions.slash_command(
     name="clear",
-    description="Supprime un certain nombre de messages dans le canal")
+    description="Supprime un certain nombre de messages dans le canal",
+)
 @interactions.slash_option(name="amount",
                            description="Nombre de messages à supprimer",
                            required=True,
-                           opt_type=interactions.OptionType.INTEGER)
+                           opt_type=interactions.OptionType.INTEGER,
+                           min_value=1,
+                           max_value=25)
 async def clear(ctx: interactions.SlashContext, amount: int):
-    """Commande pour supprimer un certain nombre de messages"""
-    if amount > 50:
+    # Vérification que le contexte a bien un canal associé
+    if not ctx.channel:
         await ctx.send(
-            "Tu ne peux pas supprimer plus de 50 messages à la fois.",
+            "Impossible d'accéder au canal pour supprimer les messages.",
             ephemeral=True)
-    else:
-        # Récupérer l'historique des messages et les supprimer
+        return
+
+    try:
+        # Fetch les messages dans le canal
         messages = await ctx.channel.fetch_messages(limit=amount)
+        # Suppression des messages
         for message in messages:
             await message.delete()
 
-        await ctx.send(f"{amount} messages supprimés avec succès.",
+        await ctx.send(f"🗑️ {amount} messages ont été supprimés.",
                        ephemeral=True)
+    except Exception as e:
+        # Gérer l'erreur si quelque chose se passe mal
+        await ctx.send(f"Erreur lors de la suppression des messages : {e}",
+                       ephemeral=True)
+        print(f"Erreur dans /clear : {e}")
 
 
 # Liste des réponses de la boule magique
