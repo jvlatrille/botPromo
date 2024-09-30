@@ -9,7 +9,6 @@ import os
 
 timezone = pytz.timezone("Europe/Paris")
 os.environ['SEMESTER'] = '1'
-
 #------------CONSTANTES------------#
 if os.getenv('SEMESTER') == None:
     print("La variable d'environnement SEMESTRE n'est pas définie")
@@ -19,15 +18,17 @@ SEMESTRE = os.getenv('SEMESTER')
 # Si la variable d'environnement SEMESTRE est égale à 1, on utilise les ID des promos pour le semestre 1
 if (SEMESTRE.isdigit() and int(SEMESTRE) % 2 != 0):
     ID_PROMOS = {
+        # ID des promos pour le semestre 1 sur le site des emplois du temps
         "1-TD1-TP1": "355",
         "1-TD1-TP2": "356",
         "1-TD2-TP3": "358",
         "1-TD2-TP4": "359",
-        "1-TD3-TP5": "360",
+        "1-TD3-TP5": "360",  #
         "2-TD1-TP1": "381",
         "2-TD1-TP2": "382",
         "2-TD2-TP3": "384",
         "2-TD2-TP4": "385",
+        # TD1 = A, TD2 = D , TP1 = init, TP2 = alt
         "3-TD1-TP1": "240",
         "3-TD1-TP2": "232",
         "3-TD2-TP1": "300",
@@ -35,6 +36,8 @@ if (SEMESTRE.isdigit() and int(SEMESTRE) % 2 != 0):
     }
 # Sinon, on utilise les ID des promos pour le semestre 2
 elif (SEMESTRE.isdigit() and int(SEMESTRE) % 2 == 0):
+    # Semestre 2
+    # ID des promos pour le semestre 2 sur le site des emplois du temps
     ID_PROMOS = {
         "1-TD1-TP1": "368",
         "1-TD1-TP2": "369",
@@ -51,54 +54,58 @@ elif (SEMESTRE.isdigit() and int(SEMESTRE) % 2 == 0):
         "3-TD2-TP2": "429"
     }
 
-# ID des rôles pour chaque TD, TP et Année sur le serveur Discord
-ROLES = {
-    "TD": {
-        "959814970336510022": "TD1",
-        "959815001642790942": "TD2",
-        "959815034530324590": "TD3",
-    },
-    "TP": {
-        "959815069665996800": "TP1",
-        "959815092390752256": "TP2",
-        "959815110157828147": "TP3",
-        "959815124938534962": "TP4",
-        "959815142038700052": "TP5",
-    },
-    "Année": {
-        "959809924798496799": "1",
-        "959809978875650108": "2",
-        "959810006537093210": "3"
-    },
-}
+    #ID des rôles pour chaque TD,TP et Année sur le serveur discord
+    ROLES = {
+        "TD": {
+            "959814970336510022": "TD1",
+            "959815001642790942": "TD2",
+            "959815034530324590": "TD3",
+        },
+        "TP": {
+            "959815069665996800": "TP1",
+            "959815092390752256": "TP2",
+            "959815110157828147": "TP3",
+            "959815124938534962": "TP4",
+            "959815142038700052": "TP5",
+        },
+        "Année": {
+            "959809924798496799": "1",
+            "959809978875650108": "2",
+            "959810006537093210": "3"
+        },
+    }
 
 
 def format_time(timestamp, tz=pytz.timezone("UTC")):
-    """Convertit un timestamp UTC en timestamp Paris"""
+
+    # On convertit le timestamp UTC en timestamp Paris
     timestamp = datetime.datetime.utcfromtimestamp(timestamp).replace(
         tzinfo=pytz.utc).astimezone(tz)
     return timestamp.strftime("%H:%M")
 
 
-# Fonction threadée pour mettre à jour l'emploi du temps toutes les 5 minutes
+#Fonction threadée pour mettre à jour l'emploi du temps toutes les 5 minutes
 def refresh_edt(Salle):
+    #On lance une boucle infinie dans un thread
     while True:
         try:
+            #On attend 5 minutes
             out = Salle.edt.refresh()
             if out == "hour" or out == "weekend":
-                delai = (24 - datetime.datetime.now().hour) * 3600
+                #Si on est en dehors des heures de cours, on attend d'être le lendemain
+                delai = (24 - datetime.datetime.now().hour) * 3660
                 print(
-                    "[Salles] On est en dehors des heures de cours, on attend d'être le lendemain\n[Salles] On réessaie dans ",
+                    "[Salles] On est en dehors des heures de cours, on attend d'être le lendemain\n[Salles] On essaye dans ",
                     delai, " secondes")
                 Salle.change_state(False)
             else:
                 Salle.change_state(True)
-                delai = 600  # 10 minutes
+                delai = 600
         except Exception as e:
             print(
-                f"[Salles] Erreur lors de la mise à jour de l'emploi du temps : {e}"
-            )
-            print("[Salles] On réessaie dans 30 secondes")
+                "[Salles] Erreur lors de la mise à jour de l'emploi du temps: ",
+                e)
+            print("[Salles] On reessaye dans 30 secondes")
             print(traceback.format_exc())
             delai = 30
         time.sleep(delai)
@@ -115,23 +122,30 @@ class Salles(interactions.Extension):
 
     async def check_state(self, ctx: interactions.SlashContext):
         if not self.edt.active:
-            embed = interactions.Embed(
+            Embed = interactions.Embed(
                 title=":x: ERREUR :x:",
-                description=
-                "On est en dehors des heures de cours, réessayez demain.",
-                color=0xFF0000,
+                description="",
+                color=0x2980b9,
             )
-            await ctx.send(embeds=embed, ephemeral=True)
+            Embed.add_field(
+                name="On est en dehors des heures de cours\nRessayez demain",
+                value=":zzz:",
+                inline=False)
+            await ctx.send(embeds=Embed, ephemeral=True)
             return False
         if self.edt.lock:
-            embed = interactions.Embed(
+            Embed = interactions.Embed(
                 title=":x: ERREUR :x:",
-                description=
-                "L'emploi du temps n'est pas encore chargé, attends quelques secondes.",
-                color=0xFF0000,
+                description="",
+                color=0x2980b9,
             )
-            await ctx.send(embeds=embed, ephemeral=True)
+            Embed.add_field(
+                name="L'emploi du temps n'est pas encore chargé",
+                value=":hourglass_flowing_sand: attends dans quelques secondes",
+                inline=False)
+            msg = await ctx.send(embeds=Embed, ephemeral=True)
             return False
+
         return True
 
     @interactions.slash_command(
@@ -145,11 +159,11 @@ class Salles(interactions.Extension):
         if not await self.check_state(ctx):
             return
         info = self.edt.get_salle_libre()
-        embed = interactions.Embed(
+        Embed = interactions.Embed(
             title=
             "Salles libres actuellement, triées par durée de disponibilité",
             description="",
-            color=0x00FF00,
+            color=0x2980b9,
             footer={
                 "text":
                 "Dernière mise à jour: " +
@@ -165,17 +179,17 @@ class Salles(interactions.Extension):
                     strsalle += " "
             else:
                 strsalle = "📚 " + salle
-            embed.add_field(name=strsalle + "     ->     " +
+            Embed.add_field(name=strsalle + "     ->     " +
                             format_time(info[salle][0][0], timezone) + " - " +
                             format_time(info[salle][0][1], timezone),
                             value="\n",
                             inline=False)
         if len(info) == 0:
-            embed.title = ":x: ERREUR :x:"
-            embed.description = "Soit il n'y a pas de salles libres, soit l'emploi du temps n'est pas encore chargé"
-            embed.color = 0xFF0000
+            Embed.title = ":x: ERREUR :x:"
+            Embed.description = "Soit il n'y a pas de salles libres, soit l'emploi du temps n'est pas encore chargé"
+            Embed.color = 0x2980b9
 
-        await ctx.send(embeds=embed)
+        await ctx.send(embeds=Embed)
 
     @interactions.slash_command(
         name="info_salle",
@@ -194,7 +208,7 @@ class Salles(interactions.Extension):
         if not await self.check_state(ctx):
             return
         info = self.edt.get_info_salle(salle)
-        embed = interactions.Embed(
+        Embed = interactions.Embed(
             title="Informations sur la salle " + str(salle),
             description="",
             color=0x2980b9,
@@ -206,46 +220,47 @@ class Salles(interactions.Extension):
             },
         )
         if "error" in info and info["error"] == "NOT FOUND":
-            embed.title = ":x: ERREUR :x:"
-            embed.description = "La salle " + str(salle) + " n'existe pas"
-            embed.color = 0xFF0000
-            await ctx.send(embeds=embed, ephemeral=True)
+            Embed.title = ":x: ERREUR :x:"
+            Embed.description = "la salle " + str(salle) + " n'existe pas"
+            Embed.color = 0x2980b9
+            await ctx.send(embeds=Embed, ephemeral=True)
             return
         if info["free"] == [] and info["cours"] == [] and not info["now"]:
-            embed.title = ":x: ERREUR :x:"
-            embed.description = "Problème lors de la récupération des informations"
-            embed.color = 0xFF0000
-            await ctx.send(embeds=embed, ephemeral=True)
+            Embed.title = ":x: ERREUR :x:"
+            Embed.description = "Problème lors de la récupération des informations"
+            Embed.color = 0x2980b9
+            await ctx.send(embeds=Embed, ephemeral=True)
             return
 
         else:
             if "now" in info and info["now"]:
-                embed.set_thumbnail(
+                Embed.set_thumbnail(
                     url='https://media.tenor.com/LhSUbS1MsTgAAAAC/smile-no.gif'
                 )
-                embed.add_field(
+                Embed.add_field(
                     name="🔴 En cours",
                     value=info["now"]["name"] + " de **" +
                     format_time(info["now"]["begin"], timezone) + "** à  **" +
                     format_time(info["now"]["end"], timezone) + "**",
                     inline=False)
             else:
-                embed.set_thumbnail(
+                Embed.set_thumbnail(
                     url=
                     "https://media.tenor.com/QEk9IT7TRWcAAAAd/snacks-close.gif"
                 )
-                embed.add_field(name="🟢 Libre", value="\n", inline=False)
+                Embed.add_field(name="🟢 Libre", value="\n", inline=False)
 
             if "error" not in info:
                 if len(info["cours"]) > 0:
                     prochain = ""
+                    #On prend pas le premier cours, car c'est le cours actuel
                     for i in range(0, len(info["cours"])):
                         prochain += info["cours"][i][
                             "name"] + " de **" + format_time(
                                 info["cours"][i]["begin"],
                                 timezone) + "** à  **" + format_time(
                                     info["cours"][i]["end"], timezone) + "**\n"
-                    embed.add_field(name=":alarm_clock: Prochain cours",
+                    Embed.add_field(name=":alarm_clock: Prochain cours",
                                     value=prochain,
                                     inline=False)
 
@@ -256,11 +271,11 @@ class Salles(interactions.Extension):
                             info["free"][i][0],
                             timezone) + "** à **" + format_time(
                                 info["free"][i][1], timezone) + "**\n"
-                    embed.add_field(name=":white_check_mark: Disponibilités",
+                    Embed.add_field(name=":white_check_mark: Disponibilités",
                                     value=free,
                                     inline=False)
 
-            await ctx.send(embeds=embed)
+            await ctx.send(embeds=Embed)
 
     @interactions.slash_command(
         name="info_prof",
@@ -273,6 +288,7 @@ class Salles(interactions.Extension):
         required=True,
         opt_type=interactions.OptionType.STRING,
         choices=[
+            #         #On est limité à 25 choix, donc on en met que 25 (On met que les plus importants)
             interactions.SlashCommandChoice(name="Jr. Richa", value="RICHA"),
             interactions.SlashCommandChoice(name="Y. Carpentier",
                                             value="CARPENTIER"),
@@ -296,7 +312,7 @@ class Salles(interactions.Extension):
             interactions.SlashCommandChoice(name="A. Boggia", value="BOGGIA"),
             interactions.SlashCommandChoice(name="M. Capliez",
                                             value="CAPLIEZ"),
-            interactions.SlashCommandChoice(name="O. Dezeque",
+            interactions.SlashCommandChoice(name="O. DEZEQUE",
                                             value="DEZEQUE"),
             interactions.SlashCommandChoice(name="C. Rustici",
                                             value="RUSTICI"),
@@ -304,7 +320,7 @@ class Salles(interactions.Extension):
             interactions.SlashCommandChoice(name="S. Voisin (Laplace) ",
                                             value="VOISIN"),
             interactions.SlashCommandChoice(name="N. Valles-Parlangeau",
-                                            value="VALLES"),
+                                            value="Valles-Parlangeau"),
             interactions.SlashCommandChoice(name="P. Dagorret",
                                             value="DAGORRET"),
             interactions.SlashCommandChoice(name="MA. Boudia", value="BOUDIA"),
@@ -321,7 +337,7 @@ class Salles(interactions.Extension):
         if not await self.check_state(ctx):
             return
         info = self.edt.get_prof(prof)
-        embed = interactions.Embed(
+        Embed = interactions.Embed(
             title="Informations sur " + str(prof),
             description="",
             color=0x2980b9,
@@ -333,7 +349,8 @@ class Salles(interactions.Extension):
             },
         )
         if info['now'] != None:
-            embed.add_field(
+            #Embed.set_thumbnail(url="https://media.tenor.com/0YJ3qQ2Qb9UAAAAC/working.gif")
+            Embed.add_field(
                 name="🔴 En cours",
                 value=info["now"]["name"] + " de **" +
                 format_time(info["now"]["begin"], timezone) + "** à  **" +
@@ -341,10 +358,21 @@ class Salles(interactions.Extension):
                 info["now"]["salle"] + "**",
                 inline=False)
         else:
-            embed.add_field(name="🟡 Pas en cours", value="\n", inline=False)
+            #Embed.set_thumbnail(url="https://media.tenor.com/LhSUbS1MsTgAAAAC/smile-no.gif")
+            if prof == "CHBEIR":
+                Embed.add_field(
+                    name="🟡 Pas en cours",
+                    value=
+                    "Actuellement en train d'apprendre le PL/SQL à une table basse",
+                    inline=False)
+            else:
+                Embed.add_field(name="🟡 Pas en cours",
+                                value="\n",
+                                inline=False)
 
         if info['cours'] != []:
             prochain = ""
+            #On prend pas le premier cours, car c'est le cours actuel
             for i in range(0, len(info["cours"])):
                 prochain += info["cours"][i]["name"] + " de **" + format_time(
                     info["cours"][i]["begin"],
@@ -352,14 +380,14 @@ class Salles(interactions.Extension):
                         info["cours"][i]["end"], timezone
                     ) + "** en salle **" + info["cours"][i]["salle"] + "**\n"
             if prochain != "":
-                embed.add_field(name=":alarm_clock: Prochain cours",
+                Embed.add_field(name=":alarm_clock: Prochain cours",
                                 value=prochain,
                                 inline=False)
         else:
-            embed.add_field(name=":alarm_clock: Prochain cours",
+            Embed.add_field(name=":alarm_clock: Prochain cours",
                             value="Pas de cours prévus",
                             inline=False)
-        await ctx.send(embeds=embed)
+        await ctx.send(embeds=Embed)
 
     @interactions.slash_command(
         name="emploi_du_temps",
@@ -380,9 +408,9 @@ class Salles(interactions.Extension):
             if str(role) in ROLES['TP']:
                 tp = ROLES["TP"][str(role)]
         info = self.edt.get_cours_TD(annee + "-" + td + "-" + tp)
-        embed = interactions.Embed(
+        Embed = interactions.Embed(
             title="Informations sur l'emploi du temps du TD :\n" + td + "-" +
-            tp + " du BUT" + annee,
+            tp + " du BUT" + annee + "",
             description="",
             color=0x2980b9,
             footer={
@@ -393,24 +421,24 @@ class Salles(interactions.Extension):
             },
         )
         if annee == "" or td == "" or tp == "":
-            embed.title = ":x: ERREUR :x:"
-            embed.add_field(
+            Embed.title = ":x: ERREUR :x:"
+            Embed.add_field(
                 name=
                 "Tu n'as pas de rôle d'année, de TD ou de TP\nVérifie tes rôles ici : <#959813680101478470>",
                 value="\n",
                 inline=False)
-            embed.color = 0xFF0000
-            await ctx.send(embeds=embed, ephemeral=True)
+            Embed.color = 0x2980b9
+            await ctx.send(embeds=Embed, ephemeral=True)
             return
         else:
             for i in range(0, len(info["cours"])):
-                embed.add_field(
+                Embed.add_field(
                     name=format_time(info["cours"][i]["begin"], timezone) +
                     " - " + format_time(info["cours"][i]["end"], timezone),
                     value=info["cours"][i]["name"] + " en salle " +
-                    info["cours"][i]["salle"] + " avec [none]",
+                    info["cours"][i]["salle"] + " avec[none]",
                     inline=False)
-            await ctx.send(embeds=embed)
+            await ctx.send(embeds=Embed)
 
     @interactions.slash_command(
         name="extension_salle_info",
@@ -419,31 +447,31 @@ class Salles(interactions.Extension):
     async def extension_salle_info(self, ctx: interactions.SlashContext):
         print("[Salles] L'utilisateur ", ctx.author,
               " a demandé des informations sur l'extension Salles")
-        embed = interactions.Embed(
+        Embed = interactions.Embed(
             title="Informations sur l'extension [Salles]",
             description="",
             color=0x2980b9,
             footer={
                 "text":
-                "Extension créée par @noenic \nhttps://github.com/noenic/BotPromoInfo"
+                "Extension créé par @noenic \nhttps://github.com/noenic/BotPromoInfo"
             },
         )
-        embed.add_field(
+        Embed.add_field(
             name="Semestre",
             value=
             f"{SEMESTRE} {'(pair)' if int(SEMESTRE) % 2 == 0 else '(impair)'}",
             inline=False)
-        embed.add_field(name="Dernière mise à jour de l'emploi du temps",
+        Embed.add_field(name="Dernière mise à jour de l'emploi du temps",
                         value=format_time(self.edt.date.timestamp(), timezone),
                         inline=False)
-        embed.add_field(name="Liste des salles PC 🖥️",
+        Embed.add_field(name="Liste des salles PC 🖥️",
                         value=str(self.edt.listeSallesPC),
                         inline=True)
-        embed.add_field(name="Liste des salles 📚",
+        Embed.add_field(name="Liste des salles 📚",
                         value=str(self.edt.listeSallesTD),
                         inline=True)
         promo_list = "\n".join([f"{k}: {v}" for k, v in ID_PROMOS.items()])
-        embed.add_field(name="Liste des ID des promos",
+        Embed.add_field(name="Liste des ID des promos",
                         value=promo_list,
                         inline=False)
         role_list = ""
@@ -451,12 +479,13 @@ class Salles(interactions.Extension):
             role_list += f"{role_type}:\n"
             for role_id, role_name in roles.items():
                 role_list += f"  - {role_id}: {role_name}\n"
-        embed.add_field(name="Liste des rôles", value=role_list, inline=False)
+        Embed.add_field(name="Liste des rôles", value=role_list, inline=False)
 
-        await ctx.send(embeds=embed, ephemeral=True)
+        await ctx.send(embeds=Embed, ephemeral=True)
 
 
 def setup(client):
+    #On fait un thread pour charger l'emploi du temps en arrière plan toutes les 10 minutes
     thread = threading.Thread(target=refresh_edt, args=(Salles(client), ))
     thread.setDaemon(True)
     print("[Salles] chargé")
