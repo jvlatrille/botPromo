@@ -44,6 +44,7 @@ async def on_ready():
 @interactions.slash_command(name="ping",
                             description="Vérifie si le bot répond")
 async def ping(ctx):
+    logging.info(f"[Command] /ping utilisé par {ctx.author.username}")
     await ctx.send(f"Pong fdp. {round(client.latency * 1000)}ms")
 
 
@@ -87,6 +88,7 @@ async def on_message_create(event):
                            min_value=1,
                            max_value=25)
 async def clear(ctx: interactions.SlashContext, amount: int):
+    logging.info(f"[Command] /clear utilisé par {ctx.author.username} avec amount={amount}")
     # Vérification que le contexte a bien un canal associé
     if not ctx.channel:
         await ctx.send("Impossible d'accéder au canal pour supprimer les messages.", ephemeral=True)
@@ -127,6 +129,7 @@ r8ball = [
                            required=True,
                            opt_type=interactions.OptionType.STRING)
 async def eight_ball(ctx: interactions.SlashContext, question: str):
+    logging.info(f"[Command] /8ball utilisé par {ctx.author.username} avec question={question}")
     """Commande 8ball qui répond aux questions"""
     # Vérifie si la question se termine par un point d'interrogation
     if question.endswith("?"):
@@ -155,4 +158,3 @@ async def eight_ball(ctx: interactions.SlashContext, question: str):
 # Démarrage du client
 logging.info('Wallah ça fonctionne')
 client.start(TOKEN)
-
