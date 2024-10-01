@@ -8,7 +8,9 @@ import random
 import confidentiel
 
 # Configuration du logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 # Chargement des variables d'environnement
 load_dotenv()
@@ -19,11 +21,15 @@ if not TOKEN:
     exit()
 
 # Initialisation des intentions du bot avec moins d'intentions pour réduire la charge si certaines ne sont pas nécessaires
-intents = interactions.Intents.DEFAULT | interactions.Intents.MESSAGE_CONTENT | interactions.Intents.GUILD_MEMBERS
+intents = (
+    interactions.Intents.DEFAULT
+    | interactions.Intents.MESSAGE_CONTENT
+    | interactions.Intents.GUILD_MEMBERS
+)
 client = interactions.Client(intents=intents, send_command_tracebacks=False)
 
 # On utilise les dossiers contenant les extensions du bot
-sys.path.extend(['Cogs', 'Cogs/src'])
+sys.path.extend(["Cogs", "Cogs/src"])
 
 client.load_extension("Cogs.Salles")
 
@@ -38,11 +44,12 @@ async def on_ready():
         status=interactions.Status.ONLINE,  # Statut en ligne
         activity=interactions.Activity.create(
             type=interactions.ActivityType.GAME,  # Type d'activité : jouer
-            name="PING FOR HELP"))
+            name="PING FOR HELP",
+        ),
+    )
 
 
-@interactions.slash_command(name="ping",
-                            description="Vérifie si le bot répond")
+@interactions.slash_command(name="ping", description="Vérifie si le bot répond")
 async def ping(ctx):
     logging.info(f"[Command] /ping utilisé par {ctx.author.username}")
     await ctx.send(f"Pong fdp. {round(client.latency * 1000)}ms")
@@ -58,16 +65,20 @@ async def on_message_create(event):
             embed = interactions.Embed(
                 title="📋 Liste des commandes disponibles",
                 description="Voici toutes les commandes que tu peux utiliser avec ce bot",
-                color=0x2980b9,
+                color=0x2980B9,
             )
             # Ajout d'un footer à l'embed
-            embed.set_footer(text="Mentionne le bot pour afficher cette liste à nouveau.")
+            embed.set_footer(
+                text="Mentionne le bot pour afficher cette liste à nouveau."
+            )
 
             # Ajout des commandes à l'embed
             for command in client.application_commands:
-                embed.add_field(name=f"/{command.name}",
-                                value=command.description or "Pas de description disponible",
-                                inline=False)
+                embed.add_field(
+                    name=f"/{command.name}",
+                    value=command.description or "Pas de description disponible",
+                    inline=False,
+                )
 
             # Envoi de l'embed dans le canal
             await message.channel.send(embeds=embed)
@@ -81,17 +92,23 @@ async def on_message_create(event):
     name="clear",
     description="Supprime un certain nombre de messages dans le canal",
 )
-@interactions.slash_option(name="amount",
-                           description="Nombre de messages à supprimer",
-                           required=True,
-                           opt_type=interactions.OptionType.INTEGER,
-                           min_value=1,
-                           max_value=25)
+@interactions.slash_option(
+    name="amount",
+    description="Nombre de messages à supprimer",
+    required=True,
+    opt_type=interactions.OptionType.INTEGER,
+    min_value=1,
+    max_value=25,
+)
 async def clear(ctx: interactions.SlashContext, amount: int):
-    logging.info(f"[Command] /clear utilisé par {ctx.author.username} avec amount={amount}")
+    logging.info(
+        f"[Command] /clear utilisé par {ctx.author.username} avec amount={amount}"
+    )
     # Vérification que le contexte a bien un canal associé
     if not ctx.channel:
-        await ctx.send("Impossible d'accéder au canal pour supprimer les messages.", ephemeral=True)
+        await ctx.send(
+            "Impossible d'accéder au canal pour supprimer les messages.", ephemeral=True
+        )
         return
 
     try:
@@ -104,32 +121,50 @@ async def clear(ctx: interactions.SlashContext, amount: int):
         await ctx.send(f"🗑️ {amount} messages ont été supprimés.", ephemeral=True)
     except Exception as e:
         # Gérer l'erreur si quelque chose se passe mal
-        await ctx.send(f"Erreur lors de la suppression des messages : {e}", ephemeral=True)
+        await ctx.send(
+            f"Erreur lors de la suppression des messages : {e}", ephemeral=True
+        )
         logging.error(f"Erreur dans /clear : {e}")
 
 
 # Liste des réponses de la boule magique
 r8ball = [
-    "C'est certain.", "Surement (j'y crois moyen).", "Sans aucun doute.",
-    "Oui, absolument.", "Pas vraiment.", "Comme je le vois, oui.",
-    "Il semble que oui.", "Probablement.", "Les signes pointent vers oui.",
-    "Oui.", "Réponse floue, essayez à nouveau.", "Demandez plus tard.",
-    "Mieux vaut ne pas vous dire maintenant.", "Impossible à prédire.",
-    "Concentrez-vous et demandez à nouveau.", "Ne comptez pas dessus.",
-    "Ma réponse est non.", "Mes sources disent non.",
-    "Les perspectives ne sont pas si bonnes.", "Très douteux."
+    "C'est certain.",
+    "Surement (j'y crois moyen).",
+    "Sans aucun doute.",
+    "Oui, absolument.",
+    "Pas vraiment.",
+    "Comme je le vois, oui.",
+    "Il semble que oui.",
+    "Probablement.",
+    "Les signes pointent vers oui.",
+    "Oui.",
+    "Réponse floue, essayez à nouveau.",
+    "Demandez plus tard.",
+    "Mieux vaut ne pas vous dire maintenant.",
+    "Impossible à prédire.",
+    "Concentrez-vous et demandez à nouveau.",
+    "Ne comptez pas dessus.",
+    "Ma réponse est non.",
+    "Mes sources disent non.",
+    "Les perspectives ne sont pas si bonnes.",
+    "Très douteux.",
 ]
 
 
 @interactions.slash_command(
-    name="8ball",
-    description='Posez une question à la "boule magique (tkt on y crois)"')
-@interactions.slash_option(name="question",
-                           description="Votre question pour la boule magique",
-                           required=True,
-                           opt_type=interactions.OptionType.STRING)
+    name="8ball", description='Posez une question à la "boule magique (tkt on y crois)"'
+)
+@interactions.slash_option(
+    name="question",
+    description="Votre question pour la boule magique",
+    required=True,
+    opt_type=interactions.OptionType.STRING,
+)
 async def eight_ball(ctx: interactions.SlashContext, question: str):
-    logging.info(f"[Command] /8ball utilisé par {ctx.author.username} avec question={question}")
+    logging.info(
+        f"[Command] /8ball utilisé par {ctx.author.username} avec question={question}"
+    )
     """Commande 8ball qui répond aux questions"""
     # Vérifie si la question se termine par un point d'interrogation
     if question.endswith("?"):
@@ -139,11 +174,11 @@ async def eight_ball(ctx: interactions.SlashContext, question: str):
         # Création de l'embed pour la réponse
         embed = interactions.Embed(
             title="Boule Magique (Wallah c'est vrai)",
-            color=0x2980b9  # Couleur violette pour la boule magique
+            color=0x2980B9,  # Couleur violette pour la boule magique
         )
-        embed.add_field(name=f"Question de {ctx.author.username}",
-                        value=question,
-                        inline=False)
+        embed.add_field(
+            name=f"Question de {ctx.author.username}", value=question, inline=False
+        )
         embed.add_field(name="Réponse", value=response, inline=False)
 
         # Envoi de l'embed
@@ -156,5 +191,5 @@ async def eight_ball(ctx: interactions.SlashContext, question: str):
 
 
 # Démarrage du client
-logging.info('Wallah ça fonctionne')
+logging.info("Wallah ça fonctionne")
 client.start(TOKEN)
