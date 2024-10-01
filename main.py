@@ -1,15 +1,21 @@
-import sys, os
+import sys
+import os
+import logging
 from dotenv import load_dotenv
 import interactions
 from interactions import Embed
 import random
+import confidentiel
+
+# Configuration du logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Chargement des variables d'environnement
 load_dotenv()
-TOKEN = os.environ['TOKEN']
+TOKEN = confidentiel.TOKEN
 
 if not TOKEN:
-    print("[Main] TOKEN non trouvé")
+    logging.error("[Main] TOKEN non trouvé")
     exit()
 
 # Initialisation des intentions du bot avec moins d'intentions pour réduire la charge si certaines ne sont pas nécessaires
@@ -25,7 +31,7 @@ client.load_extension("Cogs.Salles")
 @interactions.listen()
 async def on_ready():
     """Fonction exécutée quand le bot est prêt"""
-    print("[Main] Bot prêt")
+    logging.info("[Main] Bot prêt")
 
     # Définir le statut et l'activité du bot avec les bonnes méthodes
     await client.change_presence(
@@ -50,19 +56,16 @@ async def on_message_create(event):
             # Création de l'embed pour l'affichage des commandes
             embed = interactions.Embed(
                 title="📋 Liste des commandes disponibles",
-                description=
-                "Voici toutes les commandes que tu peux utiliser avec ce bot",
+                description="Voici toutes les commandes que tu peux utiliser avec ce bot",
                 color=0x2980b9,
             )
             # Ajout d'un footer à l'embed
-            embed.set_footer(
-                text="Mentionne le bot pour afficher cette liste à nouveau.")
+            embed.set_footer(text="Mentionne le bot pour afficher cette liste à nouveau.")
 
             # Ajout des commandes à l'embed
             for command in client.application_commands:
                 embed.add_field(name=f"/{command.name}",
-                                value=command.description
-                                or "Pas de description disponible",
+                                value=command.description or "Pas de description disponible",
                                 inline=False)
 
             # Envoi de l'embed dans le canal
@@ -70,7 +73,7 @@ async def on_message_create(event):
 
     except Exception as e:
         # Log de l'erreur pour mieux comprendre ce qui plante
-        print(f"Erreur dans on_message_create : {e}")
+        logging.error(f"Erreur dans on_message_create : {e}")
 
 
 @interactions.slash_command(
@@ -86,9 +89,7 @@ async def on_message_create(event):
 async def clear(ctx: interactions.SlashContext, amount: int):
     # Vérification que le contexte a bien un canal associé
     if not ctx.channel:
-        await ctx.send(
-            "Impossible d'accéder au canal pour supprimer les messages.",
-            ephemeral=True)
+        await ctx.send("Impossible d'accéder au canal pour supprimer les messages.", ephemeral=True)
         return
 
     try:
@@ -98,13 +99,11 @@ async def clear(ctx: interactions.SlashContext, amount: int):
         for message in messages:
             await message.delete()
 
-        await ctx.send(f"🗑️ {amount} messages ont été supprimés.",
-                       ephemeral=True)
+        await ctx.send(f"🗑️ {amount} messages ont été supprimés.", ephemeral=True)
     except Exception as e:
         # Gérer l'erreur si quelque chose se passe mal
-        await ctx.send(f"Erreur lors de la suppression des messages : {e}",
-                       ephemeral=True)
-        print(f"Erreur dans /clear : {e}")
+        await ctx.send(f"Erreur lors de la suppression des messages : {e}", ephemeral=True)
+        logging.error(f"Erreur dans /clear : {e}")
 
 
 # Liste des réponses de la boule magique
@@ -154,5 +153,6 @@ async def eight_ball(ctx: interactions.SlashContext, question: str):
 
 
 # Démarrage du client
-print('Wallah ça fonctionne')
+logging.info('Wallah ça fonctionne')
 client.start(TOKEN)
+
