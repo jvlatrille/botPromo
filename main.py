@@ -6,6 +6,7 @@ import interactions
 from interactions import Embed
 import random
 import confidentiel
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Configuration du logging
 logging.basicConfig(
@@ -14,7 +15,7 @@ logging.basicConfig(
 
 # Chargement des variables d'environnement
 load_dotenv()
-TOKEN = confidentiel.TOKEN
+TOKEN = confidentiel.TOKENBOTPROMO
 
 if not TOKEN:
     logging.error("[Main] TOKEN non trouvé")
