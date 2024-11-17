@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 import interactions
 from interactions import Embed
 import random
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import confidentiel
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Configuration du logging
 logging.basicConfig(
