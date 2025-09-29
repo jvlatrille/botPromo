@@ -34,30 +34,49 @@ sys.path.extend(["Cogs", "Cogs/src"])
 
 client.load_extension("Cogs.Salles")
 
+WRONG_CHANNEL_ID = 959809554294665238
 
-@interactions.listen()
-async def on_ready():
-    """Fonction exécutée quand le bot est prêt"""
-    logging.info("[Main] Bot prêt")
+async def _warn_wrong_channel(ctx, *, block: bool = True) -> bool:
+    """
+    True => on doit STOP la commande (mauvais salon).
+    Envoie un avertissement éphémère une seule fois par commande.
+    """
+    if getattr(ctx, "_already_warned_wrong_channel", False):
+        return getattr(ctx, "_should_block_wrong_channel", False)
 
-    # Définir le statut et l'activité du bot avec les bonnes méthodes
-    await client.change_presence(
-        status=interactions.Status.ONLINE,  # Statut en ligne
-        activity=interactions.Activity.create(
-            type=interactions.ActivityType.GAME,  # Type d'activité : jouer
-            name="PING FOR HELP",
-        ),
-    )
+    try:
+        chan_id = int(getattr(getattr(ctx, "channel", None), "id", 0) or getattr(ctx, "channel_id", 0))
+        in_wrong = (chan_id == WRONG_CHANNEL_ID)
+        if in_wrong:
+            await ctx.send("Utilisez les bons salons j'ai dit", ephemeral=True)
+            ctx._already_warned_wrong_channel = True
+            ctx._should_block_wrong_channel = bool(block)
+            return block
+    except Exception as e:
+        logging.error(f"[WarnWrongChannel] {e}")
+
+    return False
+
 
 
 @interactions.slash_command(name="ping", description="Vérifie si le bot répond")
 async def ping(ctx):
+    if await _warn_wrong_channel(ctx):  # bloque si mauvais salon
+        return
+
     logging.info(f"[Command] /ping utilisé par {ctx.author.username}")
     await ctx.send(f"Pong fdp. {round(client.latency * 1000)}ms")
 
 
 @interactions.listen()
 async def on_message_create(event):
+    # id du salon (assure-toi que c'est le bon)
+    chan_id = int(getattr(getattr(event, "channel", None), "id", 0) 
+                or getattr(event, "channel_id", 0) 
+                or getattr(message, "channel_id", 0))
+    # si on est dans le mauvais salon ET que c'est un ping -> on ignore
+    if chan_id == WRONG_CHANNEL_ID and f"<@{client.user.id}>" in (message.content or ""):
+        return
     try:
         message = event.message
         # Vérification si le bot est mentionné en utilisant son ID
@@ -102,6 +121,9 @@ async def on_message_create(event):
     max_value=25,
 )
 async def clear(ctx: interactions.SlashContext, amount: int):
+    if await _warn_wrong_channel(ctx):  # bloque si mauvais salon
+        return
+
     logging.info(
         f"[Command] /clear utilisé par {ctx.author.username} avec amount={amount}"
     )
@@ -163,6 +185,9 @@ r8ball = [
     opt_type=interactions.OptionType.STRING,
 )
 async def eight_ball(ctx: interactions.SlashContext, question: str):
+    if await _warn_wrong_channel(ctx):  # bloque si mauvais salon
+        return
+
     logging.info(
         f"[Command] /8ball utilisé par {ctx.author.username} avec question={question}"
     )

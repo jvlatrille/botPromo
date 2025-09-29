@@ -14,6 +14,7 @@ if os.getenv('SEMESTER') == None:
     print("La variable d'environnement SEMESTRE n'est pas définie")
     exit(1)
 SEMESTRE = os.getenv('SEMESTER')
+WRONG_CHANNEL_ID = 959809554294665238
 
 # Si la variable d'environnement SEMESTRE est égale à 1, on utilise les ID des promos pour le semestre 1
 if (SEMESTRE.isdigit() and int(SEMESTRE) % 2 != 0):
@@ -97,9 +98,9 @@ def refresh_edt(Salle):
                 print(
                     "[Salles] On est en dehors des heures de cours, on attend d'être le lendemain\n[Salles] On essaye dans ",
                     delai, " secondes")
-                Salle.change_state(False)
+                Salle.check_state(False)
             else:
-                Salle.change_state(True)
+                Salle.check_state(True)
                 delai = 600
         except Exception as e:
             print(
@@ -117,8 +118,22 @@ class Salles(interactions.Extension):
         self.client: interactions.Client = client
         self.edt = TrouveTaSalle(ID_PROMOS, refresh_on_init=False)
 
-    def change_state(self, state):
-        self.edt.active = state
+    async def _warn_wrong_channel(self, ctx: interactions.SlashContext, *, block: bool = True) -> bool:
+        # anti-doublon partagé (on réutilise les flags mis sur ctx par main.py si déjà posés)
+        if getattr(ctx, "_already_warned_wrong_channel", False):
+            return getattr(ctx, "_should_block_wrong_channel", False)
+
+        try:
+            chan_id = int(getattr(getattr(ctx, "channel", None), "id", 0) or getattr(ctx, "channel_id", 0))
+            if chan_id == WRONG_CHANNEL_ID:
+                await ctx.send("Utilisez les bons salons j'ai dit", ephemeral=True)
+                ctx._already_warned_wrong_channel = True
+                ctx._should_block_wrong_channel = bool(block)
+                return block
+        except Exception as e:
+            print("[Salles] WarnWrongChannel error:", e)
+        return False
+
 
     async def check_state(self, ctx: interactions.SlashContext):
         if not self.edt.active:
@@ -154,6 +169,8 @@ class Salles(interactions.Extension):
         "Retourne les salles libres actuellement, triées par durée de disponibilité",
     )
     async def salle_libre(self, ctx: interactions.SlashContext):
+        if await self._warn_wrong_channel(ctx):  # bloque si mauvais salon
+            return
         print("[Salles] L'utilisateur ", ctx.author,
               " a demandé les salles libres")
         if not await self.check_state(ctx):
@@ -203,6 +220,8 @@ class Salles(interactions.Extension):
         max_length=3,
         min_length=1)
     async def info_salle(self, ctx: interactions.SlashContext, salle: str):
+        if await self._warn_wrong_channel(ctx):  # bloque si mauvais salon
+            return
         print("[Salles] L'utilisateur ", ctx.author,
               " a demandé les informations sur la salle ", salle)
         if not await self.check_state(ctx):
@@ -332,6 +351,8 @@ class Salles(interactions.Extension):
                                             value="GASTAMBIDE"),
         ])
     async def info_prof(self, ctx: interactions.SlashContext, prof: str):
+        if await self._warn_wrong_channel(ctx):  # bloque si mauvais salon
+            return
         print("[Salles] L'utilisateur ", ctx.author,
               " a demandé les informations sur le professeur ", prof)
         if not await self.check_state(ctx):
@@ -394,6 +415,8 @@ class Salles(interactions.Extension):
         description="Retourne ton emploi du temps par rapport à tes rôles",
     )
     async def emploi_du_temps(self, ctx: interactions.SlashContext):
+        if await self._warn_wrong_channel(ctx):  # bloque si mauvais salon
+            return
         print("[Salles] L'utilisateur ", ctx.author,
               " a demandé son emploi du temps")
         if not await self.check_state(ctx):
@@ -445,6 +468,8 @@ class Salles(interactions.Extension):
         description="Retourne des informations sur le plugin salle",
     )
     async def extension_salle_info(self, ctx: interactions.SlashContext):
+        if await self._warn_wrong_channel(ctx):  # bloque si mauvais salon
+            return
         print("[Salles] L'utilisateur ", ctx.author,
               " a demandé des informations sur l'extension Salles")
         Embed = interactions.Embed(
