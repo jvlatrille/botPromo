@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation BotPromo IUT Bayonne</title>
+    <meta name="description" content="Notice d'installation et d'utilisation pour le Bot Discord de l'IUT de Bayonne.">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <button class="theme-toggle" id="themeToggle" title="Changer de thème">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span>Documentation</span>
+            <h1>BotPromo</h1>
+            <p style="font-size: 0.85rem; color: var(--text-light);">IUT Bayonne - Anglet</p>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#intro" class="active">Introduction</a></li>
+            <li><a href="#prerequis">Prérequis</a></li>
+            <li><a href="#config">Configuration</a></li>
+            <li><a href="#installation">Installation</a></li>
+            <li>
+                <a href="#commandes">Commandes</a>
+                <ul class="nav-sub-links">
+                    <li><a href="#cmd-salles-libres">/salles_libres</a></li>
+                    <li><a href="#cmd-info-salle">/info_salle</a></li>
+                    <li><a href="#cmd-info-prof">/info_prof</a></li>
+                    <li><a href="#cmd-emploi-du-temps">/emploi_du_temps</a></li>
+                    <li><a href="#cmd-autres">Autres commandes</a></li>
+                </ul>
+            </li>
+            <li><a href="#troubleshoot">Dépannage</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+
+        <section id="intro">
+            <h2>Introduction</h2>
+            <p>Bienvenue sur la documentation du <strong>BotPromo</strong>. Ce bot Discord est un outil développé spécifiquement pour faciliter la vie étudiante à l'IUT de Bayonne.</p>
+            <p>Il centralise des informations essentielles en temps réel : synchronisation des emplois du temps (via fichiers ICS), vérification de la disponibilité des salles informatiques et de TD, et consultation des créneaux des professeurs.</p>
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <strong>Intelligent :</strong> Le bot gère automatiquement les semaines paires/impaires et les groupes de TD/TP pour afficher les informations pertinentes.
+                </div>
+            </div>
+        </section>
+
+        <section id="prerequis">
+            <h2>Prérequis techniques</h2>
+            <p>Avant de vous lancer dans l'installation, assurez-vous de disposer des éléments suivants :</p>
+            <ul>
+                <li><strong>Token Discord :</strong> Vous devez avoir créé une application et un bot sur le <a href="https://discord.com/developers/applications" target="_blank">Discord Developer Portal</a> pour obtenir ce token.</li>
+                <li><strong>Fichiers sources :</strong> L'intégralité du dossier du projet (incluant les dossiers <code>Cogs</code>, <code>EDT</code>, etc.).</li>
+                <li><strong>Environnement d'exécution :</strong>
+                    <ul>
+                        <li>Recommandé : <strong>Docker</strong> et <strong>Docker Compose</strong>.</li>
+                        <li>Alternatif : <strong>Python 3.9</strong> ou supérieur et <strong>pip</strong>.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <section id="config">
+            <h2>Configuration Initiale (Obligatoire)</h2>
+            <p>Cette étape est cruciale pour le bon fonctionnement du bot, quelle que soit la méthode d'installation choisie.</p>
+
+            <h3>1. Création du fichier confidentiel</h3>
+            <p>Pour des raisons de sécurité, le token du bot ne doit jamais être partagé. Créez un fichier nommé <code>confidentiel.py</code> à la racine du projet.</p>
+            <pre><code class="language-python"># Fichier : confidentiel.py
+# Remplacez la valeur ci-dessous par votre vrai token
+TOKENBOTPROMO = "VOTRE_TOKEN_DISCORD_ICI_A_NE_PAS_PARTAGER"</code><button class="copy-btn">Copier</button></pre>
+
+            <h3>2. Configuration du Semestre</h3>
+            <p>Le bot a besoin de connaître le semestre actuel pour charger les bons emplois du temps (S1/S3 vs S2/S4).</p>
+            <p>Vous devez définir une variable d'environnement nommée <code>SEMESTER</code> :</p>
+            <ul>
+                <li>Valeur <code>1</code> : Pour un semestre impair (Automne).</li>
+                <li>Valeur <code>2</code> : Pour un semestre pair (Printemps).</li>
+            </ul>
+        </section>
+
+        <section id="installation">
+            <h2>Installation et Lancement</h2>
+            <p>Choisissez l'une des deux méthodes ci-dessous. La méthode Docker est fortement recommandée pour sa simplicité et sa stabilité.</p>
+
+            <div class="alert alert-info">
+                <i class="fab fa-docker" style="font-size: 1.5rem;"></i>
+                <div>
+                    <h3>Méthode A : Via Docker (Recommandée)</h3>
+                    <p>Le fichier <code>docker-compose.yaml</code> est déjà prêt. Il vous suffit de configurer les variables d'environnement directement dans ce fichier ou dans un fichier <code>.env</code>.</p>
+
+                    <p><strong>1. Configuration dans docker-compose.yaml :</strong></p>
+                    <pre><code class="language-yaml">environment:
+  # Assurez-vous que ces valeurs sont correctes
+  - TOKEN=VOTRE_TOKEN_DISCORD_ICI # (Optionnel si confidentiel.py est utilisé)
+  - SEMESTER=1 # 1 ou 2</code></pre>
+
+                    <p><strong>2. Lancement :</strong></p>
+                    <p>Ouvrez un terminal dans le dossier du projet et exécutez :</p>
+                    <pre><code class="language-bash">docker-compose up -d --build</code><button class="copy-btn">Copier</button></pre>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem;">
+                <h3>Méthode B : Installation Manuelle (Python)</h3>
+                <ol>
+                    <li>Installez les dépendances : <code>pip install -r requirements.txt</code></li>
+                    <li>Définissez la variable d'environnement <code>SEMESTER</code> sur votre système (ex: <code>export SEMESTER=1</code> sous Linux).</li>
+                    <li>Lancez le bot : <code>python main.py</code></li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="commandes">
+            <h2>Commandes Disponibles</h2>
+            <p>Le bot utilise les "Slash Commands" de Discord modernes. Tapez <code>/</code> dans un salon autorisé pour voir la liste.</p>
+            <p>Voici le détail de l'utilisation et le résultat de chaque commande.</p>
+
+            <div class="command-detail" id="cmd-salles-libres">
+                <h3><span class="cmd-name">/salles_libres</span></h3>
+                <p>Cette commande analyse les emplois du temps en temps réel pour trouver les salles de cours non occupées.</p>
+                <ul>
+                    <li>Affiche une liste des salles actuellement libres.</li>
+                    <li>Trie les résultats : les salles libres pour la plus longue durée apparaissent en premier.</li>
+                    <li>Indique l'heure jusqu'à laquelle la salle reste libre.</li>
+                </ul>
+
+                <figure class="screenshot-figure">
+                    <img src="https://via.placeholder.com/800x400?text=Capture+d'%C3%A9cran+de+/salles_libres" alt="Résultat de la commande /salles_libres">
+                    <figcaption>Exemple : La commande affiche que la salle 124 est libre jusqu'à 15h30.</figcaption>
+                </figure>
+            </div>
+
+            <div class="command-detail" id="cmd-info-salle">
+                <h3><span class="cmd-name">/info_salle [nom_salle]</span></h3>
+                <p>Obtenez le statut détaillé d'une salle spécifique. Vous devez fournir le numéro ou le nom de la salle en paramètre (ex: <code>124</code>, <code>15</code>, <code>Info 1</code>).</p>
+                <ul>
+                    <li>Indique si la salle est actuellement occupée ou libre.</li>
+                    <li>Si occupée : précise quel cours a lieu et jusqu'à quelle heure.</li>
+                    <li>Si libre : précise quand commence le prochain cours.</li>
+                    <li>Affiche le planning des prochains créneaux de la journée.</li>
+                </ul>
+
+                <figure class="screenshot-figure">
+                    <img src="https://via.placeholder.com/800x400?text=Capture+d'%C3%A9cran+de+/info_salle" alt="Résultat de la commande /info_salle 124">
+                    <figcaption>Exemple : Demande d'informations sur la salle "Info 3".</figcaption>
+                </figure>
+            </div>
+
+            <div class="command-detail" id="cmd-info-prof">
+                <h3><span class="cmd-name">/info_prof [nom_prof]</span></h3>
+                <p>Permet de localiser un professeur dans l'IUT selon son emploi du temps.</p>
+                <ul>
+                    <li>Recherche partielle : taper "Dondi" trouvera "M. Dondin".</li>
+                    <li>Indique si le professeur est actuellement en cours.</li>
+                    <li>Si oui, précise la matière, la salle et l'heure de fin.</li>
+                    <li>Indique l'heure et la salle de son prochain cours.</li>
+                </ul>
+
+                <figure class="screenshot-figure">
+                    <img src="https://via.placeholder.com/800x400?text=Capture+d'%C3%A9cran+de+/info_prof" alt="Résultat de la commande /info_prof">
+                    <figcaption>Exemple : Recherche du statut actuel de M. Roose.</figcaption>
+                </figure>
+            </div>
+
+            <div class="command-detail" id="cmd-emploi-du-temps">
+                <h3><span class="cmd-name">/emploi_du_temps</span></h3>
+                <p>Affiche votre emploi du temps personnel pour la journée.</p>
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>Cette commande nécessite que vous ayez les bons rôles sur le serveur Discord (Année + Groupe de TD/TP, ex: "1", "TD1", "TP2") pour filtrer votre emploi du temps.</div>
+                </div>
+                <ul>
+                    <li>Affiche les cours de la journée en fonction de vos groupes.</li>
+                    <li>Gère automatiquement les semaines paires et impaires.</li>
+                </ul>
+
+                <figure class="screenshot-figure">
+                    <img src="https://via.placeholder.com/800x400?text=Capture+d'%C3%A9cran+de+/emploi_du_temps" alt="Résultat de la commande /emploi_du_temps">
+                    <figcaption>Exemple : Emploi du temps généré pour un étudiant de 1ère année, TD2.</figcaption>
+                </figure>
+            </div>
+
+            <div class="command-detail" id="cmd-autres">
+                <h3><span class="cmd-name">Autres / Utilitaires</span></h3>
+                <p>Quelques commandes utilitaires sont également disponibles :</p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+                    <div class="util-card">
+                        <code>/ping</code>
+                        <p>Vérifie si le bot est en ligne et affiche sa latence en ms.</p>
+                    </div>
+                    <div class="util-card">
+                        <code>/8ball [question]</code>
+                        <p>Posez une question, la boule magique vous répondra.</p>
+                    </div>
+                    <div class="util-card">
+                        <code>/clear [nombre]</code>
+                        <p>(Admin/Modo) Supprime le nombre spécifié de messages.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="troubleshoot">
+            <h2>Dépannage / FAQ</h2>
+
+            <div class="alert alert-warning">
+                <i class="fas fa-shield-alt"></i>
+                <div><strong>Note importante :</strong> Le bot est configuré pour restreindre certaines commandes à des salons Discord spécifiques.</div>
+            </div>
+
+            <h3>Message : "Utilisez les bons salons j'ai dit"</h3>
+            <p>Si vous recevez cette réponse, c'est que vous tentez d'utiliser une commande dans un salon non autorisé par la configuration du bot. Réessayez dans le salon dédié aux commandes de bot.</p>
+
+            <h3>Le bot démarre puis s'arrête immédiatement</h3>
+            <p>L'erreur la plus fréquente est l'absence de la variable d'environnement <code>SEMESTER</code>. Le bot ne peut pas fonctionner sans savoir s'il doit charger les EDT pairs ou impairs. Vérifiez votre <code>docker-compose.yaml</code> ou vos variables système.</p>
+
+            <h3>/emploi_du_temps ne fonctionne pas pour moi</h3>
+            <p>Cette commande dépend de vos rôles Discord. Assurez-vous d'avoir les rôles correspondant à votre année (ex: "1" ou "2") ET à vos groupes (ex: "TD1", "TP2"). Le bot utilise ces noms exacts pour filtrer le fichier ICS global.</p>
+        </section>
+
+        <footer>
+            <p>&copy; 2023 - Documentation BotPromo IUT Bayonne | Généré pour GitHub Pages</p>
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
