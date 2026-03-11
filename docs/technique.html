@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Technique - BotPromo</title>
+    <meta name="description" content="Documentation technique de l'architecture du BotPromo.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <button class="theme-toggle" id="themeToggle" title="Changer de thème">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span>Documentation</span>
+            <h1>BotPromo</h1>
+            <p style="font-size: 0.85rem; color: var(--text-light);">IUT Bayonne - Anglet</p>
+        </div>
+        
+        <div style="margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+            <a href="index.html" style="font-weight: 600; font-size: 0.95rem;">
+                <i class="fas fa-arrow-left" style="margin-right: 8px;"></i> Retour au Tutoriel
+            </a>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#architecture" class="active">Architecture Globale</a></li>
+            <li><a href="#moteur-edt">Moteur EDT (TrouveTaSalle)</a></li>
+            <li><a href="#cogs-salles">Cogs Discord (Salles.py)</a></li>
+            <li><a href="#main-script">Point d'entrée (main.py)</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+
+        <section id="architecture">
+            <h2>Introduction et Contexte Technique</h2>
+            
+            <p>Bienvenue dans la documentation technique du <strong>BotPromo</strong> Jinx. Ce document s'adresse aux développeurs, aux contributeurs potentiels, ainsi qu'aux étudiants curieux.</p>
+
+            <h3>Choix technologiques et Architecture</h3>
+            <p>Le projet repose sur plusieurs piliers techniques :</p>
+            <ul>
+                <li><strong>Python 3 & <code>interactions.py</code> :</strong> Le bot est entièrement codé en Python. L'utilisation de la bibliothèque moderne <code>interactions.py</code> permet une gestion native, asynchrone et optimisée des <em>Slash Commands</em> de Discord.</li>
+                <li><strong>Architecture Modulaire (Cogs) :</strong> Le code est strictement séparé selon le principe de responsabilité unique. L'interface avec Discord et la déclaration des commandes sont isolées dans le dossier <code>Cogs/</code> (ex: <code>Salles.py</code>), tandis que la logique métier et le parsing des données se trouvent dans des modules indépendants (ex: <code>TrouveTaSalle.py</code>).</li>
+                <li><strong>Programmation Concurrente (Multithreading) :</strong> Pour éviter la latence lors de la mise à jour des emplois du temps, les lourdes requêtes HTTP vers les serveurs de l'IUT et l'analyse des calendriers sont déléguées à un pool de threads secondaires (via <code>concurrent.futures.ThreadPoolExecutor</code>).</li>
+                <li><strong>Conteneurisation :</strong> Le bot est packagé avec <code>Docker</code>, garantissant un environnement d'exécution stable et indépendant de la machine hôte.</li>
+            </ul>
+        </section>
+
+        <section id="moteur-edt">
+            <h2>Moteur EDT (<code>TrouveTaSalle.py</code>)</h2>
+            <p>Ce fichier contient le cœur logique du bot. Il s'occupe de récupérer et d'analyser les emplois du temps de l'IUT de Bayonne.</p>
+            
+            <h3>Récupération des données (ICS)</h3>
+            <p>Le bot fait des requêtes GET vers l'URL <code>https://www.iutbayonne.univ-pau.fr/outils/edt/default/export?ID=...</code> pour télécharger les données au format standard iCalendar (.ics).</p>
+            
+            <h3>Algorithme de traitement</h3>
+            <ol>
+                <li><strong>Parallélisation :</strong> La méthode <code>refresh()</code> utilise un pool de threads pour télécharger les EDT de toutes les promos simultanément.</li>
+                <li><strong>Filtrage Temporel :</strong> Les événements passés de la journée ou ceux des jours suivants sont ignorés pour optimiser la mémoire.</li>
+                <li><strong>Dédoublonnage :</strong> Si plusieurs TPs ont cours en même temps dans la même salle, l'algorithme fusionne les événements.</li>
+                <li><strong>Détection des créneaux libres :</strong> La méthode <code>detecter_creneaux_libres_salle()</code> calcule les "trous" entre les cours de la journée (généralement entre 7h45 et 18h30) pour déterminer les disponibilités d'une salle.</li>
+            </ol>
+        </section>
+
+        <section id="cogs-salles">
+            <h2>Interface Discord (<code>Cogs/Salles.py</code>)</h2>
+            <p>Cette extension charge les commandes liées aux salles et aux professeurs. Elle intègre des dictionnaires constants associant les rôles Discord à leurs IDs pour les semestres pairs et impairs.</p>
+            
+            <h3>Tâche de fond (Background Task)</h3>
+            <p>Le module initialise un Thread détaché (Daemon) exécutant la fonction <code>refresh_edt()</code>. Ce thread appelle la méthode de mise à jour toutes les 10 minutes en journée. En dehors des heures de cours, le thread se met en sommeil prolongé pour économiser la bande passante.</p>
+
+            <h3>Gestion des Salons</h3>
+            <p>Une fonction utilitaire <code>_warn_wrong_channel()</code> vérifie l'ID du salon où la commande est exécutée. Si l'utilisateur n'est pas dans le bon salon, la commande est bloquée et un message éphémère d'avertissement est renvoyé.</p>
+        </section>
+
+        <section id="main-script">
+            <h2>Point d'entrée (<code>main.py</code>)</h2>
+            <p>Le fichier principal orchestre l'initialisation du bot :</p>
+            <ul>
+                <li>Chargement sécurisé du Token depuis les variables d'environnement via <code>dotenv</code>.</li>
+                <li>Définition des <em>Intents</em> Discord (limités au strict nécessaire : guild messages et membres).</li>
+                <li>Chargement dynamique de l'extension <code>Cogs.Salles</code>.</li>
+                <li>Définition de commandes utilitaires de base (<code>/ping</code>, <code>/clear</code>, <code>/8ball</code>).</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 - Documentation BotPromo IUT Bayonne | <a href="index.html">Retour au Tutoriel</a></p>
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
