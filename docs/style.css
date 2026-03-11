@@ -450,8 +450,20 @@ h3 .cmd-name {
     color: white;
 }
 
-.lang-option .flag {
+.lang-option .flag, .flag-icon {
     font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.8rem;
+    height: 1.2rem;
+}
+
+.svg-flag {
+    height: 1.1rem;
+    width: auto;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 footer {

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fr: '🇫🇷',
         en: '🇬🇧',
         es: '🇪🇸',
-        eu: '🚩'
+        eu: '<img src="images/drapeauBasque.svg" class="svg-flag">'
     };
 
     function lireLangueURL() {
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function majUIBoutonsLangue(langue) {
         langOptionsList.forEach(b => b.classList.toggle('active', b.dataset.lang === langue));
         if (drapeauMap[langue]) {
-            currentLangIcon.textContent = drapeauMap[langue];
+            currentLangIcon.innerHTML = drapeauMap[langue];
             currentLangText.textContent = langue.toUpperCase();
         }
     }
