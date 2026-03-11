@@ -6,7 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let traductions = {};
     let langueActuelle = 'fr';
 
-    const boutonsLangue = document.querySelectorAll('.lang-btn[data-lang]');
+    const langDropdown = document.getElementById('langDropdown');
+    const langDropBtn = document.getElementById('langDropBtn');
+    const langOptionsList = document.querySelectorAll('.lang-option');
+    const currentLangIcon = document.getElementById('currentLangIcon');
+    const currentLangText = document.getElementById('currentLangText');
+
+    const drapeauMap = {
+        fr: '🇫🇷',
+        en: '🇬🇧',
+        es: '🇪🇸',
+        eu: '🚩'
+    };
 
     function lireLangueURL() {
         const params = new URLSearchParams(window.location.search);
@@ -75,7 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function majUIBoutonsLangue(langue) {
-        boutonsLangue.forEach(b => b.classList.toggle('active', b.dataset.lang === langue));
+        langOptionsList.forEach(b => b.classList.toggle('active', b.dataset.lang === langue));
+        if (drapeauMap[langue]) {
+            currentLangIcon.textContent = drapeauMap[langue];
+            currentLangText.textContent = langue.toUpperCase();
+        }
     }
 
     function majURLLangue(langue) {
@@ -116,8 +131,19 @@ document.addEventListener('DOMContentLoaded', () => {
         (memLang && languesDisponibles.includes(memLang) && memLang) ||
         (languesDisponibles.includes(navLang) ? navLang : 'fr');
 
-    // click boutons langue
-    boutonsLangue.forEach(btn => {
+    // Toggle dropdown
+    langDropBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        langDropdown.classList.toggle('active');
+    });
+
+    // Fermer le dropdown si on clique ailleurs
+    document.addEventListener('click', () => {
+        langDropdown.classList.remove('active');
+    });
+
+    // click options langue
+    langOptionsList.forEach(btn => {
         btn.addEventListener('click', () => {
             definirLangue(btn.dataset.lang, { syncURL: true });
         });
