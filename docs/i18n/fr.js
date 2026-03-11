@@ -23,8 +23,9 @@ window.i18n_fr = {
     },
     "intro": {
         "titre": "Introduction",
-        "p1": "Bienvenue sur la documentation du <strong>BotPromo</strong>. Ce bot Discord est un outil développé spécifiquement pour faciliter la vie étudiante à l'IUT de Bayonne.",
-        "p2": "Il centralise des informations essentielles en temps réel : synchronisation des emplois du temps (via fichiers ICS), vérification de la disponibilité des salles informatiques et de TD, et consultation des créneaux des professeurs.",
+        "p1": "Bienvenue sur la documentation du <strong>BotPromo Jinx</strong>. Ce bot Discord est un outil développé spécifiquement pour faciliter la vie étudiante à l'IUT de Bayonne et du Pays Basque.",
+        "p2": "Le projet est une amélioration et la suite d'un projet similaire développé les années précédentes. Il a été créer pour faciliter l'accès aux informations sur les emplois du temps et la disponibilité des salles ainsi que l'emploi du temps des professeurs.",
+        "p3": "Il centralise des informations essentielles en temps réel : synchronisation des emplois du temps (via fichiers ICS), vérification de la disponibilité des salles informatiques et de TD, et consultation des créneaux des enseignants.",
         "alertIntelligent": "<strong>Intelligent :</strong> Le bot gère automatiquement les semaines paires/impaires et les groupes de TD/TP pour afficher les informations pertinentes."
     },
     "prerequis": {
@@ -87,13 +88,7 @@ window.i18n_fr = {
             "li4": "Indique l'heure et la salle de son prochain cours.",
             "caption": "Exemple : Recherche du statut actuel de M. Roose."
         },
-        "edt": {
-            "p1": "Affiche votre emploi du temps personnel pour la journée.",
-            "warn": "Cette commande nécessite que vous ayez les bons rôles sur le serveur Discord (Année + Groupe de TD/TP, ex: \"1\", \"TD1\", \"TP2\") pour filtrer votre emploi du temps.",
-            "li1": "Affiche les cours de la journée en fonction de vos groupes.",
-            "li2": "Gère automatiquement les semaines paires et impaires.",
-            "caption": "Exemple : Emploi du temps généré pour un étudiant de 1ère année, TD2."
-        },
+
         "autres": {
             "titre": "Autres / Utilitaires",
             "p1": "Quelques commandes utilitaires sont également disponibles :",
@@ -109,8 +104,7 @@ window.i18n_fr = {
         "msg1Texte": "Si vous recevez cette réponse, c'est que vous tentez d'utiliser une commande dans un salon non autorisé par la configuration du bot. Réessayez dans le salon dédié aux commandes de bot.",
         "msg2Titre": "Le bot démarre puis s'arrête immédiatement",
         "msg2Texte": "L'erreur la plus fréquente est l'absence de la variable d'environnement <code>SEMESTER</code>. Le bot ne peut pas fonctionner sans savoir s'il doit charger les EDT pairs ou impairs. Vérifiez votre <code>docker-compose.yaml</code> ou vos variables système.",
-        "msg3Titre": "/emploi_du_temps ne fonctionne pas pour moi",
-        "msg3Texte": "Cette commande dépend de vos rôles Discord. Assurez-vous d'avoir les rôles correspondant à votre année (ex: \"1\" ou \"2\") ET à vos groupes (ex: \"TD1\", \"TP2\"). Le bot utilise ces noms exacts pour filtrer le fichier ICS global."
+
     },
     "footer": {
         "text": "\u00a9 2023 - Documentation BotPromo IUT Bayonne | Généré pour GitHub Pages"
@@ -156,8 +150,7 @@ window.i18n_fr = {
             "desc": "Cette extension charge les commandes liées aux salles et aux professeurs. Elle gère également la configuration selon le semestre universitaire (pair/impair).",
             "configTitre": "Configuration du Semestre (<code>SEMESTER</code>)",
             "configDesc": "Une variable d'environnement <code>SEMESTER</code> dicte le dictionnaire <code>ID_PROMOS</code> qui est utilisé. Les identifiants (ID) des calendriers ICS changent entre les semestres impairs (S1/S3) et les semestres pairs (S2/S4).",
-            "rolesTitre": "Rôles Discord",
-            "rolesDesc": "L'utilisation de la commande personnelle <code>/emploi_du_temps</code> s'appuie sur le dictionnaire des constantes <code>ROLES</code>. Ce système associe les IDs uniques des rôles Discord à une année (Ex: \"1\", \"2\") et à des groupes (Ex: \"TD1\", \"TP2\").",
+
             "taskTitre": "Tâche de fond (Background Task)",
             "taskDesc": "Le module initialise un Thread détaché dans la fonction <code>setup()</code> exécutant <code>refresh_edt()</code>. Ce thread appelle la mise à jour des emplois du temps toutes les 10 minutes en journée. La nuit, le thread se met en sommeil prolongé pour économiser les requêtes (plusieurs heures)."
         },

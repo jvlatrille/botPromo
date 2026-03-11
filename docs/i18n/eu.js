@@ -23,9 +23,10 @@ window.i18n_eu = {
     },
     "intro": {
         "titre": "Sarrera",
-        "p1": "Ongi etorri <strong>BotPromo</strong> dokumentaziora. Discord bot hau Baionako IUTko ikasle bizitza errazteko bereziki garatutako tresna da.",
-        "p2": "Ezinbesteko informazioa denbora errealean zentralizatzen du: ordutegien sinkronizazioa (ICS fitxategien bidez), informatika eta tutoretza gelen erabilgarritasunaren egiaztapena eta irakasleen ordutegien kontsulta.",
-        "alertIntelligent": "<strong>Adimentsua:</strong> Bot-ak automatikoki kudeatzen ditu aste bikoiti/bakoitiak eta TD/TP taldeak, informazio garrantzitsua erakusteko."
+        "p1": "Ongi etorri <strong>BotPromo Jinx</strong>-en dokumentaziora. Discord-eko bot hau Baionako eta Euskal Herriko IUT-ko ikasle-bizitza errazteko bereziki garatutako tresna da.",
+        "p2": "Proiektua aurreko urteetan garatutako antzeko proiektu baten hobekuntza eta jarraipena da. Ordutegiei eta gelen erabilgarritasunari buruzko informazioa, baita irakasleen ordutegiak ere, eskuragarriago izateko sortu zen.",
+        "p3": "Funtsezko informazioa denbora errealean zentralizatzen du: ordutegien sinkronizazioa (ICS fitxategien bidez), informatika eta TD gelen erabilgarritasuna egiaztatzea, eta irakasleen ordutegiak kontsultatzea.",
+        "alertIntelligent": "<strong>Inteligentea:</strong> Bot-ak automatikoki kudeatzen ditu aste bikoitiak/bakoitiak eta TD/TP taldeak informazio garrantzitsua erakusteko."
     },
     "prerequis": {
         "titre": "Baldintza Teknikoak",
@@ -87,13 +88,6 @@ window.i18n_eu = {
             "li4": "Hurrengo klaseko gela eta ordua adierazten ditu.",
             "caption": "Adibidea: Roose jaunaren egungo egoera egiaztatzea."
         },
-        "edt": {
-            "p1": "Zure egunerako ordutegi pertsonala erakusten du.",
-            "warn": "Komando honek Discord zerbitzarian rol egokiak edukitzea eskatzen du (Urtea + TD/TP taldea, adib: \"1\", \"TD1\", \"TP2\") zure ordutegia iragazteko.",
-            "li1": "Eguneko klaseak erakusten ditu zure taldeen arabera.",
-            "li2": "Automatikoki kudeatzen ditu aste bikoitiak eta bakoitiak.",
-            "caption": "Adibidea: 1. mailako ikasle batentzat sortutako ordutegia, TD2."
-        },
         "autres": {
             "titre": "Besteak / Erabilgarriak",
             "p1": "Hainbat utilitate-komando ere eskuragarri daude:",
@@ -108,9 +102,7 @@ window.i18n_eu = {
         "msg1Titre": "Mezua: \"Utilisez les bons salons j'ai dit\" (Erabili kanal egokiak esan dut)",
         "msg1Texte": "Erantzun hau jasotzen baduzu, bot-aren konfigurazioak baimentzen ez duen kanal batean komando bat erabiltzen saiatzen ari zarela esan nahi du. Saiatu berriro bot komandoen kanal dedikatuan.",
         "msg2Titre": "Bot-a abiarazi eta berehala gelditzen da",
-        "msg2Texte": "Errakuntza arruntena <code>SEMESTER</code> ingurune-aldagaia ez egotea da. Bot-ak ezin du funtzionatu ordutegi bikoitiak edo bakoitiak kargatu behar dituen jakin gabe. Egiaztatu zure <code>docker-compose.yaml</code> edo sistemaren aldagaiak.",
-        "msg3Titre": "/emploi_du_temps ez dabil niretzat",
-        "msg3Texte": "Komando hau zure Discord rolen araberakoa da. Ziurtatu zure urteari (adibidez: \"1\" edo \"2\") ETA zure taldeei (adibidez: \"TD1\", \"TP2\") dagozkion rolak dituzula. Bot-ak izen zehatz horiek erabiltzen ditu ICS fitxategi globala iragazteko."
+        "msg2Texte": "Errakuntza arruntena <code>SEMESTER</code> ingurune-aldagaia ez egotea da. Bot-ak ezin du funtzionatu ordutegi bikoitiak edo bakoitiak kargatu behar dituen jakin gabe. Egiaztatu zure <code>docker-compose.yaml</code> edo sistemaren aldagaiak."
     },
     "footer": {
         "text": "\u00a9 2023 - BotPromo IUT Bayonne Dokumentazioa | GitHub Pageserako Sortua"
@@ -156,8 +148,6 @@ window.i18n_eu = {
             "desc": "Luzapen honek gelak eta irakasleen inguruko komandoak kargatzen ditu. Seihileko akademikoaren arabera (bikoitia/bakoitia) konfigurazioa kudeatzen du ere.",
             "configTitre": "Seihilekoaren Konfigurazioa (<code>SEMESTER</code>)",
             "configDesc": "<code>SEMESTER</code> ingurune-aldagaiak <code>ID_PROMOS</code> zein hiztegi erabiliko den zehazten du. ICS egutegiaren IDak seihileko bakoitien (S1/S3) eta bikoitien (S2/S4) artean aldatzen dira.",
-            "rolesTitre": "Discord Rolak",
-            "rolesDesc": "<code>/emploi_du_temps</code> komando pertsonalaren erabilpena <code>ROLES</code> hiztegi konstantean oinarritzen da. Sistema honek Discord-eko rol IDak urteko mailekin (\"1\", \"2\") eta taldeekin (\"TD1\", \"TP2\") lotzen ditu.",
             "taskTitre": "Aztarnako Zeregina",
             "taskDesc": "Moduluak Hari independente bat abiarazten du <code>setup()</code> funtzioan, <code>refresh_edt()</code> exekutatzeko. Hari honek ordutegia 10 minutuz behin eguneratzen du egunez. Gauez, lo geratzen da eskaerak baliabideak aurrezteko."
         },

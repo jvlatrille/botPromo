@@ -23,8 +23,9 @@ window.i18n_en = {
     },
     "intro": {
         "titre": "Introduction",
-        "p1": "Welcome to the <strong>BotPromo</strong> documentation. This Discord bot is a tool developed specifically to facilitate student life at IUT Bayonne.",
-        "p2": "It centralizes essential information in real-time: timetable synchronization (via ICS files), computer lab and tutorial room availability checks, and teacher schedule consultations.",
+        "p1": "Welcome to the <strong>BotPromo Jinx</strong> documentation. This Discord bot is a tool developed specifically to facilitate student life at IUT Bayonne and the Basque Country.",
+        "p2": "The project is an improvement and the continuation of a similar project developed in previous years. It was created to facilitate access to information on timetables and room availability as well as teacher schedules.",
+        "p3": "It centralizes essential information in real-time: timetable synchronization (via ICS files), computer lab and tutorial room availability checks, and teacher schedule consultations.",
         "alertIntelligent": "<strong>Smart:</strong> The bot automatically manages even/odd weeks and IT/TD groups to display relevant information."
     },
     "prerequis": {
@@ -87,13 +88,7 @@ window.i18n_en = {
             "li4": "Indicates the time and room for their next class.",
             "caption": "Example: Checking the current status of Mr. Roose."
         },
-        "edt": {
-            "p1": "Displays your personal timetable for the day.",
-            "warn": "This command requires you to have the correct roles on the Discord server (Year + TD/TP Group, e.g., \"1\", \"TD1\", \"TP2\") to filter your schedule.",
-            "li1": "Displays the classes of the day based on your groups.",
-            "li2": "Automatically manages even and odd weeks.",
-            "caption": "Example: Timetable generated for a 1st-year student, TD2."
-        },
+
         "autres": {
             "titre": "Other / Utilities",
             "p1": "Some utility commands are also available:",
@@ -109,8 +104,7 @@ window.i18n_en = {
         "msg1Texte": "If you receive this response, it means you are attempting to use a command in a channel not authorized by the bot's configuration. Try again in the dedicated bot commands channel.",
         "msg2Titre": "The bot starts and stops immediately",
         "msg2Texte": "The most common error is the absence of the <code>SEMESTER</code> environment variable. The bot cannot function without knowing whether to load even or odd timetables. Check your <code>docker-compose.yaml</code> or your system variables.",
-        "msg3Titre": "/emploi_du_temps does not work for me",
-        "msg3Texte": "This command depends on your Discord roles. Make sure you have the roles corresponding to your year (e.g., \"1\" or \"2\") AND your groups (e.g., \"TD1\", \"TP2\"). The bot uses these exact names to filter the global ICS file."
+
     },
     "footer": {
         "text": "\u00a9 2023 - BotPromo Documentation IUT Bayonne | Generated for GitHub Pages"
@@ -156,8 +150,7 @@ window.i18n_en = {
             "desc": "This extension loads room and teacher-related commands. It also manages configuration depending on the academic semester (even/odd).",
             "configTitre": "Semester Configuration (<code>SEMESTER</code>)",
             "configDesc": "An environment variable <code>SEMESTER</code> dictates which <code>ID_PROMOS</code> dictionary is used. The ICS calendar IDs change between odd semesters (S1/S3) and even semesters (S2/S4).",
-            "rolesTitre": "Discord Roles",
-            "rolesDesc": "The usage of the personal <code>/emploi_du_temps</code> command relies on the <code>ROLES</code> constants dictionary. This system associates unique Discord role IDs to a year (e.g., \"1\", \"2\") and groups (e.g., \"TD1\", \"TP2\").",
+
             "taskTitre": "Background Task",
             "taskDesc": "The module initializes a detached Thread in the <code>setup()</code> function running <code>refresh_edt()</code>. This thread triggers timetable updates every 10 minutes during the day. At night, it sleeps for prolonged hours to save requests."
         },

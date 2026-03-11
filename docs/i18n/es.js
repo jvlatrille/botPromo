@@ -23,8 +23,9 @@ window.i18n_es = {
     },
     "intro": {
         "titre": "Introducción",
-        "p1": "Bienvenido a la documentación de <strong>BotPromo</strong>. Este bot de Discord es una herramienta desarrollada específicamente para facilitar la vida estudiantil en el IUT de Bayonne.",
-        "p2": "Centraliza información esencial en tiempo real: sincronización de horarios (vía archivos ICS), verificación de disponibilidad de salas de informática y de tutoriales, y consulta de horarios de profesores.",
+        "p1": "Bienvenido a la documentación de <strong>BotPromo Jinx</strong>. Este bot de Discord es una herramienta desarrollada específicamente para facilitar la vida estudiantil en el IUT de Bayonne y del País Vasco.",
+        "p2": "El proyecto es una mejora y la continuación de un proyecto similar desarrollado en años anteriores. Fue creado para facilitar el acceso a la información sobre los horarios y la disponibilidad de las salas, así como los horarios de los profesores.",
+        "p3": "Centraliza información esencial en tiempo real: sincronización de horarios (vía archivos ICS), verificación de disponibilidad de salas de informática y de talleres, y consulta de horarios de profesores.",
         "alertIntelligent": "<strong>Inteligente:</strong> El bot gestiona automáticamente las semanas pares/impares y los grupos de TD/TP para mostrar la información pertinente."
     },
     "prerequis": {
@@ -87,13 +88,7 @@ window.i18n_es = {
             "li4": "Indica el aula y la hora de su próxima clase.",
             "caption": "Ejemplo: Comprobación del estado actual del Sr. Roose."
         },
-        "edt": {
-            "p1": "Muestra su horario personal para el día.",
-            "warn": "Este comando requiere que tenga los roles adecuados en el servidor de Discord (Año + Grupo de TD/TP, ej: \"1\", \"TD1\", \"TP2\") para filtrar su horario.",
-            "li1": "Muestra las clases del día en función de sus grupos.",
-            "li2": "Gestiona automáticamente las semanas pares e impares.",
-            "caption": "Ejemplo: Horario generado para un estudiante de 1er año, TD2."
-        },
+
         "autres": {
             "titre": "Otros / Utilidades",
             "p1": "También hay algunos comandos de utilidad disponibles:",
@@ -109,8 +104,7 @@ window.i18n_es = {
         "msg1Texte": "Si recibe esta respuesta, significa que está intentando utilizar un comando en un canal no autorizado por la configuración del bot. Inténtelo de nuevo en el canal dedicado a comandos de bot.",
         "msg2Titre": "El bot se inicia y se detiene inmediatamente",
         "msg2Texte": "El error más frecuente es la ausencia de la variable de entorno <code>SEMESTER</code>. El bot no puede funcionar sin saber si debe cargar los horarios pares o impares. Revise su <code>docker-compose.yaml</code> o sus variables de sistema.",
-        "msg3Titre": "/emploi_du_temps no funciona para mí",
-        "msg3Texte": "Este comando depende de sus roles de Discord. Asegúrese de tener los roles que corresponden a su año (ej: \"1\" o \"2\") Y a sus grupos (ej: \"TD1\", \"TP2\"). El bot utiliza exactamente estos nombres para filtrar el archivo ICS global."
+
     },
     "footer": {
         "text": "\u00a9 2023 - Documentación BotPromo IUT Bayonne | Generado para GitHub Pages"
@@ -156,8 +150,7 @@ window.i18n_es = {
             "desc": "Esta extensión carga comandos relacionados con salas y profesores. También gestiona la configuración según el semestre académico (par/impar).",
             "configTitre": "Configuración del Semestre (<code>SEMESTER</code>)",
             "configDesc": "Una variable de entorno <code>SEMESTER</code> dicta qué diccionario <code>ID_PROMOS</code> se utiliza. Los ID del calendario ICS chanmbian entre semestres impares (S1/S3) y pares (S2/S4).",
-            "rolesTitre": "Roles de Discord",
-            "rolesDesc": "El uso del comando personal <code>/emploi_du_temps</code> se basa en el diccionario de constantes <code>ROLES</code>. Este sistema asocia los ID únicos de los roles de Discord con un año (Ej: \"1\", \"2\") y grupos (Ej: \"TD1\", \"TP2\").",
+
             "taskTitre": "Tarea en Segundo Plano",
             "taskDesc": "El módulo inicializa un Hilo independiente en la función <code>setup()</code> que ejecuta <code>refresh_edt()</code>. Este hilo activa la actualización del horario cada 10 minutos durante el día. Por la noche, duerme durante horas prolongadas para ahorrar solicitudes."
         },

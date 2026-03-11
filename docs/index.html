@@ -64,7 +64,7 @@
                     <li><a href="#cmd-salles-libres">/salles_libres</a></li>
                     <li><a href="#cmd-info-salle">/info_salle</a></li>
                     <li><a href="#cmd-info-prof">/info_prof</a></li>
-                    <li><a href="#cmd-emploi-du-temps">/emploi_du_temps</a></li>
+
                     <li><a href="#cmd-autres" data-i18n="nav.autresCommandes">Autres commandes</a></li>
                 </ul>
             </li>
@@ -82,10 +82,10 @@
     <main class="main-content">
 
         <section id="intro">
-            <h2>Introduction</h2>
-            <p>Bienvenue sur la documentation du <strong>BotPromo Jinx</strong>. Ce bot Discord est un outil développé spécifiquement pour faciliter la vie étudiante à l'IUT de Bayonne et du Pays Basque.</p>
-            <p>Le projet est une amélioration et la suite d'un projet similaire développé les années précédentes. Il a été créer pour faciliter l'accès aux informations sur les emplois du temps et la disponibilité des salles ainsi que l'emploi du temps des professeurs.</p>
-            <p>Il centralise des informations essentielles en temps réel : synchronisation des emplois du temps (via fichiers ICS), vérification de la disponibilité des salles informatiques et de TD, et consultation des créneaux des enseignants.</p>
+            <h2 data-i18n="intro.titre">Introduction</h2>
+            <p data-i18n-html="true" data-i18n="intro.p1">Bienvenue sur la documentation du <strong>BotPromo Jinx</strong>. Ce bot Discord est un outil développé spécifiquement pour faciliter la vie étudiante à l'IUT de Bayonne et du Pays Basque.</p>
+            <p data-i18n="intro.p2">Le projet est une amélioration et la suite d'un projet similaire développé les années précédentes. Il a été créer pour faciliter l'accès aux informations sur les emplois du temps et la disponibilité des salles ainsi que l'emploi du temps des professeurs.</p>
+            <p data-i18n="intro.p3">Il centralise des informations essentielles en temps réel : synchronisation des emplois du temps (via fichiers ICS), vérification de la disponibilité des salles informatiques et de TD, et consultation des créneaux des enseignants.</p>
             <div class="alert alert-info">
                 <i class="fas fa-info-circle"></i>
                 <div data-i18n-html="true" data-i18n="intro.alertIntelligent">
@@ -230,27 +230,7 @@ TOKENBOTPROMO = "VOTRE_TOKEN_DISCORD_ICI_A_NE_PAS_PARTAGER"</code><button class=
                 </figure>
             </div>
 
-            <div class="command-detail" id="cmd-emploi-du-temps">
-                <h3><span class="cmd-name">/emploi_du_temps</span></h3>
-                <p data-i18n="cmds.edt.p1">Affiche votre emploi du temps personnel pour la journée.</p>
 
-                <div class="alert alert-warning">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <div data-i18n="cmds.edt.warn">
-                        Cette commande nécessite que vous ayez les bons rôles sur le serveur Discord (Année + Groupe de TD/TP, ex: "1", "TD1", "TP2") pour filtrer votre emploi du temps.
-                    </div>
-                </div>
-
-                <ul>
-                    <li data-i18n="cmds.edt.li1">Affiche les cours de la journée en fonction de vos groupes.</li>
-                    <li data-i18n="cmds.edt.li2">Gère automatiquement les semaines paires et impaires.</li>
-                </ul>
-
-                <figure class="screenshot-figure">
-                    <img src="https://via.placeholder.com/800x400?text=Capture+d'%C3%A9cran+de+/emploi_du_temps" alt="Résultat de la commande /emploi_du_temps">
-                    <figcaption data-i18n="cmds.edt.caption">Exemple : Emploi du temps généré pour un étudiant de 1ère année, TD2.</figcaption>
-                </figure>
-            </div>
 
             <div class="command-detail" id="cmd-autres">
                 <h3><span class="cmd-name" data-i18n="cmds.autres.titre">Autres / Utilitaires</span></h3>
