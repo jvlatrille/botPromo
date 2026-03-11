@@ -114,5 +114,63 @@ window.i18n_eu = {
     },
     "footer": {
         "text": "\u00a9 2023 - BotPromo IUT Bayonne Dokumentazioa | GitHub Pageserako Sortua"
+    },
+    "tech": {
+        "head": {
+            "title": "Dokumentazio Teknikoa - BotPromo"
+        },
+        "sidebar": {
+            "doc": "Dokumentazio Teknikoa"
+        },
+        "nav": {
+            "retour": "Itzuli Tutorialera",
+            "architecture": "Arkitektura Globala",
+            "moteur": "EDT Motorra",
+            "interface": "Discord Interfazea",
+            "main": "Sarrera"
+        },
+        "architecture": {
+            "titre": "Sarrera eta Testuinguru Teknikoa",
+            "desc": "Ongi etorri <strong>BotPromo</strong> Jinx-en dokumentazio teknikora. Dokumentu hau garatzaileei, kolaboratzaileei eta ikasle bitxiei zuzenduta dago.",
+            "choixTitre": "Aukera Teknologikoak eta Arkitektura",
+            "choixDesc": "Proiektua hainbat oinarri teknikotan funtsatzen da:",
+            "liPython": "<strong>Python 3 eta <code>interactions.py</code>:</strong> Bota guztiz Pythonen programatuta dago. <code>interactions.py</code> liburutegi modernoak Discord-eko <em>Slash Komandoen</em> kudeaketa asinkrono eta optimizatua bermatzen du.",
+            "liModulaire": "<strong>Arkitektura Modularra (Cogs):</strong> Kodea ardura bakunaren printzipioaren arabera banatuta dago. Discord interfazea eta komandoak <code>Cogs/</code> karpetan isolatuta daude (ad. <code>Salles.py</code>), eta datuen prozesamendua <code>Cogs/src/</code> karpetan dago (ad. <code>TrouveTaSalle.py</code>).",
+            "liAsync": "<strong>Programazio Konkurrentea (Multithreading):</strong> Ordutegiak eguneratzean latentzia ekiditeko, IUTko zerbitzarietara eskaerak hari sekundarioen talde baten esku uzten dira (<code>concurrent.futures.ThreadPoolExecutor</code>-ren bidez).",
+            "liDocker": "<strong>Kontenedorizazioa:</strong> Bota <code>Docker</code> bidez paketatuta dago, makina ostalaritik independente den exekuzio ingurune egonkorra bermatuz."
+        },
+        "moteur": {
+            "titre": "EDT Motorra",
+            "desc": "Fitxategi honek bot-aren muin logikoa du. Baionako IUTko ordutegiak lortu eta aztertzeaz arduratzen da.",
+            "recupTitre": "Datuen Eskuratzea (ICS)",
+            "recupDesc": "Botak GET eskaerak egiten ditu IUTko ordutegien helbidera datuak (.ics) formatu estandarrean deskargatzeko. Gelak bi kategoriatan banatzen dira: <code>listeSallesPC</code> (ordenagailudun gelak) eta <code>listeSallesTD</code> (gela klasikoak).",
+            "algoTitre": "Prozesamendu Algoritmoa",
+            "algo1": "<strong>Paralelizazioa:</strong> <code>refresh()</code> metodoak hari talde bat erabiltzen du ordutegi guztiak aldi berean deskargatzeko.",
+            "algo2": "<strong>Denbora Iragazketa:</strong> Igarotako gertaerak edo hurrengo egunetakoak alde batera uzten dira memoria eta errendimendua optimizatzeko.",
+            "algo3": "<strong>Bikoiztasunak Ezabatzea:</strong> Hainbat taldek aldi berean klasea badute gela berean (ad. baterako eskolak), algoritmoak gertaerak modu asmatuan batzen ditu.",
+            "algo4": "<strong>Tarte Libreen Detekzioa:</strong> <code>detecter_creneaux_libres_salle()</code> metodoak klaseen arteko 'hutsuneak' kalkulatzen ditu egun osoan zehar aske dauden gelak aurkitzeko.",
+            "algo5": "<strong>Irakasleen Bilaketa:</strong> <code>get_prof()</code> metodoak irakasle bat ICS gertaeren azalpenetan bilatzen du kokaleku zehatza aurkitzeko."
+        },
+        "interface": {
+            "titre": "Discord Interfazea",
+            "desc": "Luzapen honek gelak eta irakasleen inguruko komandoak kargatzen ditu. Seihileko akademikoaren arabera (bikoitia/bakoitia) konfigurazioa kudeatzen du ere.",
+            "configTitre": "Seihilekoaren Konfigurazioa (<code>SEMESTER</code>)",
+            "configDesc": "<code>SEMESTER</code> ingurune-aldagaiak <code>ID_PROMOS</code> zein hiztegi erabiliko den zehazten du. ICS egutegiaren IDak seihileko bakoitien (S1/S3) eta bikoitien (S2/S4) artean aldatzen dira.",
+            "rolesTitre": "Discord Rolak",
+            "rolesDesc": "<code>/emploi_du_temps</code> komando pertsonalaren erabilpena <code>ROLES</code> hiztegi konstantean oinarritzen da. Sistema honek Discord-eko rol IDak urteko mailekin (\"1\", \"2\") eta taldeekin (\"TD1\", \"TP2\") lotzen ditu.",
+            "taskTitre": "Aztarnako Zeregina",
+            "taskDesc": "Moduluak Hari independente bat abiarazten du <code>setup()</code> funtzioan, <code>refresh_edt()</code> exekutatzeko. Hari honek ordutegia 10 minutuz behin eguneratzen du egunez. Gauez, lo geratzen da eskaerak baliabideak aurrezteko."
+        },
+        "main": {
+            "titre": "Sarrera Gunea",
+            "desc": "Fitxategi nagusiak bot-aren abiaraztea koordinatzen du:",
+            "liToken": "Tokenaren karga segurua ingurune-aldagaietatik <code>dotenv</code> edo bertako <code>confidentiel.py</code> fitxategitik.",
+            "liIntents": "Discord-eko <em>Intents</em>en definizioa (soilik beharrezkoak direnak: zerbitzariko mezuak eta partaideak).",
+            "liCogs": "<code>Cogs.Salles</code> luzapen nagusiaren karga dinamikoa.",
+            "liCmds": "Oinarrizko komando orokorren definizioa (<code>/ping</code>, <code>/clear</code>, <code>/8ball</code>)."
+        },
+        "footer": {
+            "text": "\u00a9 2026 - BotPromo IUT Bayonne Dokumentazioa"
+        }
     }
 };

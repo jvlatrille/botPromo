@@ -114,5 +114,63 @@ window.i18n_en = {
     },
     "footer": {
         "text": "\u00a9 2023 - BotPromo Documentation IUT Bayonne | Generated for GitHub Pages"
+    },
+    "tech": {
+        "head": {
+            "title": "Technical Documentation - BotPromo"
+        },
+        "sidebar": {
+            "doc": "Technical Documentation"
+        },
+        "nav": {
+            "retour": "Back to Tutorial",
+            "architecture": "Global Architecture",
+            "moteur": "EDT Engine",
+            "interface": "Discord Interface",
+            "main": "Entry Point"
+        },
+        "architecture": {
+            "titre": "Introduction and Technical Context",
+            "desc": "Welcome to the technical documentation of <strong>BotPromo</strong> Jinx. This document is intended for developers, potential contributors, as well as curious students.",
+            "choixTitre": "Technological Choices and Architecture",
+            "choixDesc": "The project is built on several technical pillars:",
+            "liPython": "<strong>Python 3 & <code>interactions.py</code>:</strong> The bot is entirely coded in Python. The use of the modern <code>interactions.py</code> library allows native, asynchronous, and optimized management of Discord <em>Slash Commands</em>.",
+            "liModulaire": "<strong>Modular Architecture (Cogs):</strong> The code is strictly separated according to the single responsibility principle. The interface with Discord and command declarations are isolated in the <code>Cogs/</code> folder (e.g., <code>Salles.py</code>), while business logic and data parsing reside in <code>Cogs/src/</code> (e.g., <code>TrouveTaSalle.py</code>).",
+            "liAsync": "<strong>Concurrent Programming (Multithreading):</strong> To avoid latency during timetable updates, heavy HTTP requests to IUT servers and calendar parsing are delegated to a secondary thread pool (via <code>concurrent.futures.ThreadPoolExecutor</code>).",
+            "liDocker": "<strong>Containerization:</strong> The bot is packaged with <code>Docker</code>, ensuring a stable execution environment independent of the host machine."
+        },
+        "moteur": {
+            "titre": "EDT Engine",
+            "desc": "This file contains the bot's logical core. It handles fetching and parsing the timetables for IUT Bayonne.",
+            "recupTitre": "Data Retrieval (ICS)",
+            "recupDesc": "The bot makes GET requests to the IUT timetables URL to download standard iCalendar (.ics) format data. Rooms are divided into two categories: <code>listeSallesPC</code> (computer rooms) and <code>listeSallesTD</code> (classic rooms).",
+            "algoTitre": "Processing Algorithm",
+            "algo1": "<strong>Parallelization:</strong> The <code>refresh()</code> method uses a thread pool to download timetables for all promos simultaneously.",
+            "algo2": "<strong>Temporal Filtering:</strong> Past events for the day or upcoming days are ignored to optimize memory and performance.",
+            "algo3": "<strong>Deduplication:</strong> If multiple groups have a class at the same time in the same room (e.g., shared lecture), the algorithm smartly merges the events.",
+            "algo4": "<strong>Free Slot Detection:</strong> The <code>detecter_creneaux_libres_salle()</code> method calculates 'gaps' between classes during the day (generally from 7:45 AM to 6:30 PM) to determine exact room availability.",
+            "algo5": "<strong>Teacher Search:</strong> The <code>get_prof()</code> method processes ICS event descriptions to locate a specific teacher (subject, room, timeframe)."
+        },
+        "interface": {
+            "titre": "Discord Interface",
+            "desc": "This extension loads room and teacher-related commands. It also manages configuration depending on the academic semester (even/odd).",
+            "configTitre": "Semester Configuration (<code>SEMESTER</code>)",
+            "configDesc": "An environment variable <code>SEMESTER</code> dictates which <code>ID_PROMOS</code> dictionary is used. The ICS calendar IDs change between odd semesters (S1/S3) and even semesters (S2/S4).",
+            "rolesTitre": "Discord Roles",
+            "rolesDesc": "The usage of the personal <code>/emploi_du_temps</code> command relies on the <code>ROLES</code> constants dictionary. This system associates unique Discord role IDs to a year (e.g., \"1\", \"2\") and groups (e.g., \"TD1\", \"TP2\").",
+            "taskTitre": "Background Task",
+            "taskDesc": "The module initializes a detached Thread in the <code>setup()</code> function running <code>refresh_edt()</code>. This thread triggers timetable updates every 10 minutes during the day. At night, it sleeps for prolonged hours to save requests."
+        },
+        "main": {
+            "titre": "Entry Point",
+            "desc": "The main file orchestrates bot initialization:",
+            "liToken": "Secure Token loading from environment variables via <code>dotenv</code> or a local <code>confidentiel.py</code> file.",
+            "liIntents": "Declaration of Discord <em>Intents</em> (limited strictly to what's necessary: server messages and members).",
+            "liCogs": "Dynamic loading of the main <code>Cogs.Salles</code> extension.",
+            "liCmds": "Definition of basic overarching utility commands (<code>/ping</code>, <code>/clear</code>, <code>/8ball</code>)."
+        },
+        "footer": {
+            "text": "\u00a9 2026 - BotPromo Documentation IUT Bayonne"
+        }
     }
 };
