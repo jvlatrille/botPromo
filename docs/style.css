@@ -46,6 +46,17 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+h1 i.fa-discord, h2 i.fa-discord {
+    margin-right: 12px;
+    color: #5865F2; /* Discord Blurple */
+}
+
+/* Sidebar icon specific */
+.sidebar-header h1 i.fa-discord {
+    font-size: 1.3rem;
+    margin-right: 8px;
+}
+
 /* --- Sidebar Navigation --- */
 .sidebar {
     width: 280px;
