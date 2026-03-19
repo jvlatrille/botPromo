@@ -167,7 +167,7 @@ TOKENBOTPROMO = "VOTRE_TOKEN_DISCORD_ICI_A_NE_PAS_PARTAGER"</code><button class=
             <div class="alert alert-info">
                 <i class="fab fa-docker" style="font-size: 1.5rem;"></i>
                 <div>
-                    <h3 data-i18n="install.methodeA">Méthode A : Via Docker (Recommandée)</h3>
+                    <h3 data-i18n-html="true" data-i18n="install.methodeA">Méthode A : Via Docker (Recommandée)</h3>
                     <p data-i18n-html="true" data-i18n="install.pA1">
                         Le fichier <code>docker-compose.yaml</code> est déjà prêt. Il vous suffit de configurer les variables d'environnement directement dans ce fichier ou dans un fichier <code>.env</code>.
                     </p>
@@ -186,13 +186,16 @@ TOKENBOTPROMO = "VOTRE_TOKEN_DISCORD_ICI_A_NE_PAS_PARTAGER"</code><button class=
                 </div>
             </div>
 
-            <div style="margin-top: 3rem;">
-                <h3 data-i18n="install.methodeB">Méthode B : Installation Manuelle (Python)</h3>
-                <ol>
-                    <li data-i18n-html="true" data-i18n="install.liB1">Installez les dépendances : <code>pip install -r requirements.txt</code></li>
-                    <li data-i18n-html="true" data-i18n="install.liB2">Définissez la variable d'environnement <code>SEMESTER</code> sur votre système (ex: <code>export SEMESTER=1</code> sous Linux).</li>
-                    <li data-i18n-html="true" data-i18n="install.liB3">Lancez le bot : <code>python main.py</code></li>
-                </ol>
+            <div class="alert alert-warning" style="margin-top: 3rem;">
+                <i class="fab fa-python" style="font-size: 1.5rem;"></i>
+                <div>
+                    <h3 data-i18n-html="true" data-i18n="install.methodeB">Méthode B : Installation Manuelle (Python)</h3>
+                    <ol>
+                        <li data-i18n-html="true" data-i18n="install.liB1">Installez les dépendances : <code>pip install -r requirements.txt</code></li>
+                        <li data-i18n-html="true" data-i18n="install.liB2">Définissez la variable d'environnement <code>SEMESTER</code> sur votre système (ex: <code>export SEMESTER=1</code> sous Linux).</li>
+                        <li data-i18n-html="true" data-i18n="install.liB3">Lancez le bot : <code>python main.py</code></li>
+                    </ol>
+                </div>
             </div>
         </section>
 

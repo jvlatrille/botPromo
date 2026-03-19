@@ -38,8 +38,8 @@ window.i18n_eu = {
         "liToken": "<strong>Discord Tokena:</strong> <a href=\"https://discord.com/developers/applications\" target=\"_blank\">Discord Developer Portal</a> webgunean aplikazio bat eta bot bat sortu behar dituzu token hau lortzeko.",
         "liSources": "<strong>Iturburu fitxategiak:</strong> Proiektuaren karpeta osoa (<code>Cogs</code>, <code>EDT</code> eta abar barne).",
         "liEnvStrong": "Gauzatze ingurunea:",
-        "liDocker": "Gomendatua: <strong>Docker</strong> eta <strong>Docker Compose</strong>.",
-        "liPython": "Alternatiba: <strong>Python 3.9</strong> edo berriagoa eta <strong>pip</strong>."
+        "liDocker": "<i class=\"fab fa-docker\"></i> Gomendatua: <strong>Docker</strong> eta <strong>Docker Compose</strong>.",
+        "liPython": "<i class=\"fab fa-python\"></i> Alternatiba: <strong>Python 3.9</strong> edo berriagoa eta <strong>pip</strong>."
     },
     "config": {
         "titre": "Hasierako Konfigurazioa (Derrigorrezkoa)",
@@ -55,12 +55,12 @@ window.i18n_eu = {
     "install": {
         "titre": "Instalazioa eta Abiaraztea",
         "p1": "Aukeratu beheko bi metodoetako bat. Docker metodoa oso gomendagarria da bere sinpletasun eta egonkortasunagatik.",
-        "methodeA": "A Metodoa: Docker Bidez (Gomendatua)",
+        "methodeA": "A Metodoa: Docker Bidez (Gomendatua) <i class=\"fab fa-docker\"></i>",
         "pA1": "<code>docker-compose.yaml</code> fitxategia prest dago jada. Besterik gabe, konfiguratu ingurune-aldagaiak zuzenean fitxategi honetan edo <code>.env</code> fitxategi batean.",
         "pA2": "<strong>1. Konfigurazioa docker-compose.yaml fitxategian:</strong>",
         "pA3": "<strong>2. Abiaraztea:</strong>",
         "pA4": "Ireki terminal bat proiektuaren karpetan eta exekutatu:",
-        "methodeB": "B Metodoa: Eskuzko Instalazioa (Python)",
+        "methodeB": "B Metodoa: Eskuzko Instalazioa (Python) <i class=\"fab fa-python\"></i>",
         "liB1": "Instalatu dependentziak: <code>pip install -r requirements.txt</code>",
         "liB2": "Ezarri <code>SEMESTER</code> ingurune-aldagaia zure sisteman (adib: <code>export SEMESTER=1</code> Linuxen).",
         "liB3": "Abiarazi bot-a: <code>python main.py</code>"
@@ -130,10 +130,10 @@ window.i18n_eu = {
             "desc": "Ongi etorri <strong>BotPromo</strong> Jinx-en dokumentazio teknikora. Dokumentu hau garatzaileei, kolaboratzaileei eta ikasle bitxiei zuzenduta dago.",
             "choixTitre": "Aukera Teknologikoak eta Arkitektura",
             "choixDesc": "Proiektua hainbat oinarri teknikotan funtsatzen da:",
-            "liPython": "<strong>Python 3 eta <code>interactions.py</code>:</strong> Bota guztiz Pythonen programatuta dago. <code>interactions.py</code> liburutegi modernoak Discord-eko <em>Slash Komandoen</em> kudeaketa asinkrono eta optimizatua bermatzen du.",
+            "liPython": "<i class=\"fab fa-python\"></i> <strong>Python 3 eta <code>interactions.py</code>:</strong> Bota guztiz Pythonen programatuta dago. <code>interactions.py</code> liburutegi modernoak Discord-eko <em>Slash Komandoen</em> kudeaketa asinkrono eta optimizatua bermatzen du.",
             "liModulaire": "<strong>Arkitektura Modularra (Cogs):</strong> Kodea ardura bakunaren printzipioaren arabera banatuta dago. Discord interfazea eta komandoak <code>Cogs/</code> karpetan isolatuta daude (ad. <code>Salles.py</code>), eta datuen prozesamendua <code>Cogs/src/</code> karpetan dago (ad. <code>TrouveTaSalle.py</code>).",
             "liAsync": "<strong>Programazio Konkurrentea (Multithreading):</strong> Ordutegiak eguneratzean latentzia ekiditeko, IUTko zerbitzarietara eskaerak hari sekundarioen talde baten esku uzten dira (<code>concurrent.futures.ThreadPoolExecutor</code>-ren bidez).",
-            "liDocker": "<strong>Kontenedorizazioa:</strong> Bota <code>Docker</code> bidez paketatuta dago, makina ostalaritik independente den exekuzio ingurune egonkorra bermatuz."
+            "liDocker": "<i class=\"fab fa-docker\"></i> <strong>Kontenedorizazioa:</strong> Bota <code>Docker</code> bidez paketatuta dago, makina ostalaritik independente den exekuzio ingurune egonkorra bermatuz."
         },
         "moteur": {
             "titre": "EDT Motorra",

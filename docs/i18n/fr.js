@@ -38,8 +38,8 @@ window.i18n_fr = {
         "liToken": "<strong>Token Discord :</strong> Vous devez avoir créé une application et un bot sur le <a href=\"https://discord.com/developers/applications\" target=\"_blank\">Discord Developer Portal</a> pour obtenir ce token.",
         "liSources": "<strong>Fichiers sources :</strong> L'intégralité du dossier du projet (incluant les dossiers <code>Cogs</code>, <code>EDT</code>, etc.).",
         "liEnvStrong": "Environnement d'exécution :",
-        "liDocker": "Recommandé : <strong>Docker</strong> et <strong>Docker Compose</strong>.",
-        "liPython": "Alternatif : <strong>Python 3.9</strong> ou supérieur et <strong>pip</strong>."
+        "liDocker": "<i class=\"fab fa-docker\"></i> Recommandé : <strong>Docker</strong> et <strong>Docker Compose</strong>.",
+        "liPython": "<i class=\"fab fa-python\"></i> Alternatif : <strong>Python 3.9</strong> ou supérieur et <strong>pip</strong>."
     },
     "config": {
         "titre": "Configuration Initiale (Obligatoire)",
@@ -55,12 +55,12 @@ window.i18n_fr = {
     "install": {
         "titre": "Installation et Lancement",
         "p1": "Choisissez l'une des deux méthodes ci-dessous. La méthode Docker est fortement recommandée pour sa simplicité et sa stabilité.",
-        "methodeA": "Méthode A : Via Docker (Recommandée)",
+        "methodeA": "Méthode A : Via Docker (Recommandée) <i class=\"fab fa-docker\"></i>",
         "pA1": "Le fichier <code>docker-compose.yaml</code> est déjà prêt. Il vous suffit de configurer les variables d'environnement directement dans ce fichier ou dans un fichier <code>.env</code>.",
         "pA2": "<strong>1. Configuration dans docker-compose.yaml :</strong>",
         "pA3": "<strong>2. Lancement :</strong>",
         "pA4": "Ouvrez un terminal dans le dossier du projet et exécutez :",
-        "methodeB": "Méthode B : Installation Manuelle (Python)",
+        "methodeB": "Méthode B : Installation Manuelle (Python) <i class=\"fab fa-python\"></i>",
         "liB1": "Installez les dépendances : <code>pip install -r requirements.txt</code>",
         "liB2": "Définissez la variable d'environnement <code>SEMESTER</code> sur votre système (ex: <code>export SEMESTER=1</code> sous Linux).",
         "liB3": "Lancez le bot : <code>python main.py</code>"
@@ -132,10 +132,10 @@ window.i18n_fr = {
             "desc": "Bienvenue dans la documentation technique du <strong>BotPromo</strong> Jinx. Ce document s'adresse aux développeurs, aux contributeurs potentiels, ainsi qu'aux étudiants curieux.",
             "choixTitre": "Choix technologiques et Architecture",
             "choixDesc": "Le projet repose sur plusieurs piliers techniques :",
-            "liPython": "<strong>Python 3 & <code>interactions.py</code> :</strong> Le bot est entièrement codé en Python. L'utilisation de la bibliothèque moderne <code>interactions.py</code> permet une gestion native, asynchrone et optimisée des <em>Slash Commands</em> de Discord.",
+            "liPython": "<i class=\"fab fa-python\"></i> <strong>Python 3 & <code>interactions.py</code> :</strong> Le bot est entièrement codé en Python. L'utilisation de la bibliothèque moderne <code>interactions.py</code> permet une gestion native, asynchrone et optimisée des <em>Slash Commands</em> de Discord.",
             "liModulaire": "<strong>Architecture Modulaire (Cogs) :</strong> Le code est strictement séparé selon le principe de responsabilité unique. L'interface avec Discord et la déclaration des commandes sont isolées dans le dossier <code>Cogs/</code> (ex: <code>Salles.py</code>), tandis que la logique métier et le parsing des données se trouvent dans <code>Cogs/src/</code> (ex: <code>TrouveTaSalle.py</code>).",
             "liAsync": "<strong>Programmation Concurrente (Multithreading) :</strong> Pour éviter la latence lors de la mise à jour des emplois du temps, les lourdes requêtes HTTP vers les serveurs de l'IUT et l'analyse des calendriers sont déléguées à un pool de threads secondaires (via <code>concurrent.futures.ThreadPoolExecutor</code>).",
-            "liDocker": "<strong>Conteneurisation :</strong> Le bot est packagé avec <code>Docker</code>, garantissant un environnement d'exécution stable et indépendant de la machine hôte."
+            "liDocker": "<i class=\"fab fa-docker\"></i> <strong>Conteneurisation :</strong> Le bot est packagé avec <code>Docker</code>, garantissant un environnement d'exécution stable et indépendant de la machine hôte."
         },
         "moteur": {
             "titre": "Moteur EDT",
