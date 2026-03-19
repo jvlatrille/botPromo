@@ -65,6 +65,21 @@
 
     <main class="main-content">
 
+        <header class="doc-hero">
+            <div class="doc-hero__content">
+                <span class="doc-hero__eyebrow" data-i18n="tech.sidebar.doc">Documentation Technique</span>
+                <h1 class="doc-hero__title">BotPromo</h1>
+                <p class="doc-hero__subtitle" data-i18n="sidebar.campus">IUT Bayonne - Anglet</p>
+                <div class="doc-hero__actions">
+                    <a href="#architecture" class="doc-hero__button" data-i18n="tech.nav.architecture">Architecture Globale</a>
+                    <a href="index.html" class="doc-hero__link">
+                        <i class="fas fa-arrow-left"></i>
+                        <span data-i18n="tech.nav.retour">Retour au Tutoriel</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
         <section id="architecture">
             <h2 data-i18n="tech.architecture.titre">Introduction et Contexte Technique</h2>
             
@@ -101,7 +116,7 @@
             <h2 data-i18n="tech.interface.titre">Interface Discord</h2>
             <p data-i18n="tech.interface.desc">Cette extension charge les commandes liées aux salles et aux professeurs. Elle gère également la configuration selon le semestre universitaire (pair/impair).</p>
             
-            <h3 data-i18n="tech.interface.configTitre">Configuration du Semestre (<code>SEMESTER</code>)</h3>
+            <h3 data-i18n-html="true" data-i18n="tech.interface.configTitre">Configuration du Semestre (<code>SEMESTER</code>)</h3>
             <p data-i18n-html="true" data-i18n="tech.interface.configDesc">Une variable d'environnement <code>SEMESTER</code> dicte le dictionnaire <code>ID_PROMOS</code> qui est utilisé. Les identifiants (ID) des calendriers ICS changent entre les semestres impairs (S1/S3) et les semestres pairs (S2/S4).</p>
 
             <h3 data-i18n="tech.interface.taskTitre">Tâche de fond (Background Task)</h3>
