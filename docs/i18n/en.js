@@ -12,6 +12,10 @@ window.i18n_en = {
         "doc": "Documentation",
         "campus": "IUT Bayonne - Anglet"
     },
+    "hero": {
+        "start": "Start reading",
+        "tech": "Technical Documentation"
+    },
     "nav": {
         "intro": "Introduction",
         "prerequis": "Requirements",

@@ -12,6 +12,10 @@ window.i18n_eu = {
         "doc": "Dokumentazioa",
         "campus": "Baiona - Angelu IUTa"
     },
+    "hero": {
+        "start": "Irakurtzen hasi",
+        "tech": "Dokumentazio Teknikoa"
+    },
     "nav": {
         "intro": "Sarrera",
         "prerequis": "Baldintzak",

@@ -12,6 +12,10 @@ window.i18n_fr = {
         "doc": "Documentation",
         "campus": "IUT Bayonne - Anglet"
     },
+    "hero": {
+        "start": "Commencer la lecture",
+        "tech": "Documentation Technique"
+    },
     "nav": {
         "intro": "Introduction",
         "prerequis": "Prérequis",
@@ -26,7 +30,7 @@ window.i18n_fr = {
         "p1": "Bienvenue sur la documentation du <strong>BotPromo Jinx</strong>. Ce bot Discord est un outil développé spécifiquement pour faciliter la vie étudiante à l'IUT de Bayonne et du Pays Basque.",
         "p2": "Le projet est une amélioration et la suite d'un projet similaire développé les années précédentes. Il a été créer pour faciliter l'accès aux informations sur les emplois du temps et la disponibilité des salles ainsi que l'emploi du temps des professeurs.",
         "p3": "Il centralise des informations essentielles en temps réel : synchronisation des emplois du temps (via fichiers ICS), vérification de la disponibilité des salles informatiques et de TD, et consultation des créneaux des enseignants.",
-        "alertIntelligent": "<strong>Intelligent :</strong> Le bot gère automatiquement les semaines paires/impaires et les groupes de TD/TP pour afficher les informations pertinentes."
+        "alertIntelligent": "<strong>A savoir :</strong> Le bot gère automatiquement les semaines paires/impaires et les groupes de TD/TP pour afficher les informations pertinentes."
     },
     "prerequis": {
         "titre": "Prérequis techniques",

@@ -81,17 +81,37 @@
 
     <main class="main-content">
 
+        <header class="doc-hero">
+            <div class="doc-hero__content">
+                <span class="doc-hero__eyebrow" data-i18n="sidebar.doc">Documentation</span>
+                <h1 class="doc-hero__title">BotPromo</h1>
+                <p class="doc-hero__subtitle" data-i18n="sidebar.campus">IUT Bayonne - Anglet</p>
+                <div class="doc-hero__actions">
+                    <a href="#intro" class="doc-hero__button" data-i18n="hero.start">Commencer la lecture</a>
+                    <a href="technique.html" class="doc-hero__link">
+                        <i class="fas fa-code"></i>
+                        <span data-i18n="hero.tech">Documentation Technique</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
         <section id="intro">
             <h2 data-i18n="intro.titre">Introduction</h2>
             <p data-i18n-html="true" data-i18n="intro.p1">Bienvenue sur la documentation du <strong>BotPromo Jinx</strong>. Ce bot Discord est un outil développé spécifiquement pour faciliter la vie étudiante à l'IUT de Bayonne et du Pays Basque.</p>
             <p data-i18n="intro.p2">Le projet est une amélioration et la suite d'un projet similaire développé les années précédentes. Il a été créer pour faciliter l'accès aux informations sur les emplois du temps et la disponibilité des salles ainsi que l'emploi du temps des professeurs.</p>
             <p data-i18n="intro.p3">Il centralise des informations essentielles en temps réel : synchronisation des emplois du temps (via fichiers ICS), vérification de la disponibilité des salles informatiques et de TD, et consultation des créneaux des enseignants.</p>
+            <figure class="intro-figure">
+                <img src="images/botpromo-profile.png" alt="Capture du profil Discord de BotPromo">
+                <figcaption>Profil Discord du bot utilise dans le serveur.</figcaption>
+            </figure>
             <div class="alert alert-info">
                 <i class="fas fa-info-circle"></i>
                 <div data-i18n-html="true" data-i18n="intro.alertIntelligent">
-                    <strong>Intelligent :</strong> Le bot gère automatiquement les semaines paires/impaires et les groupes de TD/TP pour afficher les informations pertinentes.
+                    <strong>A savoir :</strong> Le bot gère automatiquement les semaines paires/impaires et les groupes de TD/TP pour afficher les informations pertinentes.
                 </div>
             </div>
+            
         </section>
 
         <section id="prerequis">
@@ -192,7 +212,7 @@ TOKENBOTPROMO = "VOTRE_TOKEN_DISCORD_ICI_A_NE_PAS_PARTAGER"</code><button class=
 
                 <figure class="screenshot-figure">
                     <img src="images/salle_libre.png" alt="Résultat de la commande /salles_libres">
-                    <figcaption>Exemple : La commande affiche que la salle 124 est libre jusqu'à 16h30.</figcaption>
+                    <figcaption>Exemple : La commande affiche que la salle 15 est libre jusqu'à 18h30 tandis que la 129 est prise.</figcaption>
                 </figure>
             </div>
 
